@@ -1,0 +1,358 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"><meta content="mobile_tab" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"background":"#f8f9ff","outline":"#737686","primary-fixed":"#dbe1ff","on-tertiary-fixed-variant":"#004e5c","surface-variant":"#d3e4fe","on-secondary":"#ffffff","on-background":"#0b1c30","surface-container-low":"#eff4ff","on-surface":"#0b1c30","on-tertiary-fixed":"#001f26","on-tertiary-container":"#d7f6ff","surface-container-high":"#dce9ff","on-secondary-fixed":"#141b2c","surface-container":"#e5eeff","on-primary-fixed-variant":"#003ea8","secondary":"#565e71","surface-container-lowest":"#ffffff","on-tertiary":"#ffffff","surface-container-highest":"#d3e4fe","tertiary":"#005e6e","inverse-primary":"#b4c5ff","on-secondary-container":"#5c6477","secondary-container":"#dbe2f9","inverse-surface":"#213145","on-primary":"#ffffff","tertiary-fixed":"#acedff","on-secondary-fixed-variant":"#3f4759","on-surface-variant":"#434655","surface-dim":"#cbdbf5","on-primary-container":"#eeefff","error-container":"#ffdad6","primary-container":"#2563eb","outline-variant":"#c3c6d7","on-primary-fixed":"#00174b","secondary-fixed":"#dbe2f9","error":"#ba1a1a","tertiary-container":"#00788c","surface-tint":"#0053db","tertiary-fixed-dim":"#4cd7f6","surface":"#f8f9ff","secondary-fixed-dim":"#bfc6dc","primary":"#004ac6","on-error":"#ffffff","surface-bright":"#f8f9ff","primary-fixed-dim":"#b4c5ff","inverse-on-surface":"#eaf1ff","on-error-container":"#93000a"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"gutter-desktop":"2rem","space-lg":"1.5rem","margin":"1rem","space-xs":"0.25rem","space-md":"1rem","margin-desktop":"3rem","space-xl":"2rem","space-sm":"0.5rem","gutter-tablet":"1.5rem","gutter":"1rem","margin-tablet":"2rem"},"fontFamily":{"headline-lg":["Inter"],"body-lg":["Inter"],"headline-md":["Inter"],"label-lg":["Inter"],"body-sm":["Inter"],"headline-xl":["Inter"],"headline-xl-mobile":["Inter"],"headline-sm":["Inter"],"label-md":["Inter"],"label-sm":["Inter"],"body-md":["Inter"]},"fontSize":{"headline-lg":["24px",{"lineHeight":"32px","letterSpacing":"-0.015em","fontWeight":"600"}],"body-lg":["16px",{"lineHeight":"24px","letterSpacing":"0","fontWeight":"400"}],"headline-md":["20px",{"lineHeight":"28px","letterSpacing":"-0.01em","fontWeight":"600"}],"label-lg":["14px",{"lineHeight":"20px","letterSpacing":"0.01em","fontWeight":"600"}],"body-sm":["12px",{"lineHeight":"16px","letterSpacing":"0.01em","fontWeight":"400"}],"headline-xl":["36px",{"lineHeight":"44px","letterSpacing":"-0.02em","fontWeight":"700"}],"headline-xl-mobile":["28px",{"lineHeight":"36px","letterSpacing":"-0.02em","fontWeight":"700"}],"headline-sm":["16px",{"lineHeight":"24px","letterSpacing":"0","fontWeight":"600"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.02em","fontWeight":"600"}],"label-sm":["10px",{"lineHeight":"14px","letterSpacing":"0.04em","fontWeight":"700"}],"body-md":["14px",{"lineHeight":"20px","letterSpacing":"0","fontWeight":"400"}]}}}}</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-on-surface antialiased flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-margin flex items-center justify-between"><div class="flex items-center gap-space-sm"><img alt="AI Bus Tracker Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqmBTXTv9XwQUvnlZvWDaKqov8fU5c6EpC3SIsVHrSuN4y9fiH2Fl9IjBri2V_RvwXeaSN_ZyQzJZD0A_9e9AJmXd3L32pbGwz1zzPf-okEnyKJZZkycGXv1P6VHMReEVknxXmv_mUadCZSyjWiXmFMZbFGbaq7wm_WaytBoXz17STBuZVNw6UQHDU6KNMkB9P9syqXJGtoORv3DBF1ii7kZ0I2yshOJqOtKwZSHPFCuNnqGvc6veRQg"><div class="flex flex-col"><div class="flex items-center gap-1.5"><span class="font-label-sm text-primary uppercase tracking-wider">TransAI</span><span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-surface-container-high text-tertiary font-label-sm text-[10px]"><span class="w-1.5 h-1.5 rounded-full bg-tertiary-container animate-pulse"></span>Live Sync</span></div><span class="font-headline-sm text-headline-sm text-on-surface leading-tight">Live Tracking</span></div></div><div class="flex items-center gap-space-xs"><button aria-label="Notifications" class="relative w-11 h-11 flex items-center justify-center rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/60 transition-colors"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-primary-container ring-2 ring-surface"></span></button><a class="w-11 h-11 flex items-center justify-center rounded-full" data-path="profile" href="#"><img alt="Commuter Profile" class="w-8 h-8 rounded-full object-cover ring-2 ring-primary/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDy_muJZDvDqRbnvQbRbN7LuLEFlaifkTBB7eKXbCI4CZBqczbQewsgA_ortobcY4Xmb1PcIqw-F9Q0z1cNFQLpvwBbAhAVfZMUiKdMvYAWGzu6p4kZXBiaRcSeYVHzfgEqxUlICf1NcdwiT2vmNpgRf9i3Sz8M757o3zz80Mt5eifb-IMXSY0MAvG7Mefjw7banipuce5S9o_H2mPcaYMH2plGHuXTQ-Ov4vmYazHL"></a></div></div></header><main class="flex flex-col relative w-full pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full relative">
+<!-- Interactive Floating HUD Container -->
+<div class="px-margin pt-space-xs pb-space-sm flex flex-col gap-space-sm z-30">
+<!-- Search Bar HUD -->
+<div class="w-full bg-surface-container-lowest/90 backdrop-blur-md rounded-full shadow-md flex items-center px-4 py-2.5 gap-3 transition-all duration-300">
+<span class="material-symbols-outlined text-primary text-[22px]">search</span>
+<input class="w-full bg-transparent text-on-surface font-body-md text-body-md placeholder:text-on-surface-variant focus:outline-none truncate" placeholder="Search bus line, stop or destination..." type="text">
+<button aria-label="Use Current GPS" class="w-8 h-8 rounded-full bg-primary-fixed/60 hover:bg-primary-fixed flex items-center justify-center text-primary transition-transform active:scale-95 shrink-0" onclick="triggerGpsPulse()">
+<span class="material-symbols-outlined text-[18px]">my_location</span>
+</button>
+</div>
+<!-- Quick Filter Chips Horizontal Scroller -->
+<div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5" id="filterChips">
+<button class="filter-chip shrink-0 px-3.5 py-1.5 rounded-full bg-primary-container text-on-primary font-label-md text-label-md flex items-center gap-1.5 shadow-sm active:scale-95 transition-all" onclick="selectFilter(this, 'all')">
+<span class="material-symbols-outlined text-[15px]">directions_bus</span>
+<span>All Buses (8 in range)</span>
+</button>
+<button class="filter-chip shrink-0 px-3.5 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-md text-label-md flex items-center gap-1.5 shadow-sm hover:bg-surface-container transition-all" onclick="selectFilter(this, 'ontime')">
+<span class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_#22c55e]"></span>
+<span>On-Time Only</span>
+</button>
+<button class="filter-chip shrink-0 px-3.5 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-md text-label-md flex items-center gap-1.5 shadow-sm hover:bg-surface-container transition-all" onclick="selectFilter(this, 'delays')">
+<span class="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_#ef4444]"></span>
+<span>Delays</span>
+</button>
+<button class="filter-chip shrink-0 px-3.5 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-md text-label-md flex items-center gap-1.5 shadow-sm hover:bg-surface-container transition-all" onclick="selectFilter(this, 'express')">
+<span class="material-symbols-outlined text-[15px] text-tertiary">bolt</span>
+<span>Express Only</span>
+</button>
+</div>
+</div>
+<!-- Interactive Map Viewport -->
+<div class="relative w-full h-[410px] overflow-hidden select-none bg-surface-container-low">
+<!-- Dynamic SVG Urban Cartography Canvas -->
+<svg class="absolute inset-0 w-full h-full object-cover" fill="none" viewBox="0 0 420 440" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<!-- Waterway Soft Gradient -->
+<linearGradient gradientUnits="userSpaceOnUse" id="riverGrad" x1="0" x2="420" y1="0" y2="440">
+<stop offset="0%" stop-color="#cbdbf5" stop-opacity="0.85"></stop>
+<stop offset="100%" stop-color="#b4c5ff" stop-opacity="0.9"></stop>
+</linearGradient>
+<!-- Route 42 Glow Effect -->
+<filter height="130%" id="glowBlue" width="130%" x="-10%" y="-10%">
+<feDropShadow dx="0" dy="2" flood-color="#2563eb" flood-opacity="0.35" stdDeviation="3"></feDropShadow>
+</filter>
+<!-- User Radar Sweep Gradient -->
+<radialGradient cx="50%" cy="50%" id="radarSweep" r="50%">
+<stop offset="0%" stop-color="#2563eb" stop-opacity="0.45"></stop>
+<stop offset="70%" stop-color="#2563eb" stop-opacity="0.12"></stop>
+<stop offset="100%" stop-color="#2563eb" stop-opacity="0"></stop>
+</radialGradient>
+</defs>
+<!-- Urban Building Footprints -->
+<g opacity="0.3">
+<rect fill="#dce9ff" height="60" rx="4" width="52" x="24" y="28"></rect>
+<rect fill="#dce9ff" height="42" rx="4" width="70" x="86" y="24"></rect>
+<rect fill="#dce9ff" height="74" rx="4" width="58" x="24" y="104"></rect>
+<rect fill="#dce9ff" height="64" rx="6" width="105" x="290" y="30"></rect>
+<rect fill="#dce9ff" height="88" rx="6" width="80" x="312" y="112"></rect>
+<rect fill="#dce9ff" height="68" rx="6" width="74" x="40" y="270"></rect>
+<rect fill="#dce9ff" height="60" rx="6" width="84" x="300" y="250"></rect>
+</g>
+<!-- Central River Canal -->
+<path d="M-20,195 C70,185 140,240 230,225 C310,210 370,165 440,160 L440,212 C370,218 310,258 230,270 C140,285 70,230 -20,242 Z" fill="url(#riverGrad)"></path>
+<!-- City Parks / Recreational Greenery -->
+<path d="M 180,30 Q 235,22 254,75 Q 240,125 190,118 Q 165,85 180,30 Z" fill="#d1fae5" opacity="0.85"></path>
+<path d="M 160,320 Q 220,310 240,365 Q 185,410 140,375 Q 130,340 160,320 Z" fill="#d1fae5" opacity="0.8"></path>
+<!-- Secondary Street Grid -->
+<g opacity="0.9" stroke="#ffffff" stroke-linecap="round" stroke-width="3.5">
+<line x1="-10" x2="430" y1="78" y2="78"></line>
+<line x1="-10" x2="430" y1="150" y2="150"></line>
+<line x1="-10" x2="430" y1="310" y2="310"></line>
+<line x1="-10" x2="430" y1="390" y2="390"></line>
+<line x1="84" x2="84" y1="-10" y2="450"></line>
+<line x1="172" x2="172" y1="-10" y2="450"></line>
+<line x1="285" x2="285" y1="-10" y2="450"></line>
+<line x1="375" x2="375" y1="-10" y2="450"></line>
+</g>
+<!-- Major Arterial Boulevard Bridges -->
+<line stroke="#ffffff" stroke-linecap="square" stroke-width="8" x1="172" x2="172" y1="190" y2="275"></line>
+<line stroke="#ffffff" stroke-linecap="square" stroke-width="8" x1="285" x2="285" y1="180" y2="265"></line>
+<!-- TRANSIT LINE: Orange 108 Local Path -->
+<path d="M 28,390 L 84,390 L 84,150 L 172,150 L 285,150 L 285,78 L 410,78" fill="none" id="pathLine108" stroke="#f97316" stroke-dasharray="7 3" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.85" stroke-width="4.5"></path>
+<!-- TRANSIT LINE: Cyan Feeder 88 Path -->
+<path d="M 84,78 L 172,78 L 172,310 L 285,310" fill="none" id="pathLine88" stroke="#00788c" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.85" stroke-width="4"></path>
+<!-- TRANSIT LINE: Blue Line 42 Express Path -->
+<path d="M 12,78 L 84,78 L 172,78 L 172,230 L 285,230 L 285,390 L 415,390" fill="none" filter="url(#glowBlue)" id="pathLine42" stroke="#2563eb" stroke-linecap="round" stroke-linejoin="round" stroke-width="6"></path>
+<!-- Transit Stations Along Route 42 -->
+<circle cx="84" cy="78" fill="#ffffff" r="4.5" stroke="#2563eb" stroke-width="2.5"></circle>
+<circle cx="172" cy="150" fill="#2563eb" r="5" stroke="#ffffff" stroke-width="2"></circle>
+<circle cx="285" cy="230" fill="#ffffff" r="4.5" stroke="#2563eb" stroke-width="2.5"></circle>
+<circle cx="285" cy="390" fill="#ffffff" r="4.5" stroke="#2563eb" stroke-width="2.5"></circle>
+<!-- Stop Name Pills On Map -->
+<g>
+<rect fill="#0b1c30" fill-opacity="0.78" height="18" rx="4" width="88" x="180" y="140"></rect>
+<text fill="#ffffff" font-family="Inter" font-size="9" font-weight="600" x="186" y="153">Grand Central</text>
+</g>
+<!-- User Real-Time Position Dot with Directional Radar Cone -->
+<g id="userGpsMarker" transform="translate(196, 175)">
+<!-- Rotating Radar Beam -->
+<path d="M 0,0 L -24,-52 A 56,56 0 0,1 24,-52 Z" fill="url(#radarSweep)">
+<animateTransform attributeName="transform" dur="4.2s" from="0" repeatCount="indefinite" to="360" type="rotate"></animateTransform>
+</path>
+<!-- Concentric Distance Wave -->
+<circle cx="0" cy="0" fill="none" opacity="0.6" r="14" stroke="#2563eb" stroke-width="1.5">
+<animate attributeName="r" dur="2s" repeatCount="indefinite" values="8;24"></animate>
+<animate attributeName="opacity" dur="2s" repeatCount="indefinite" values="0.7;0"></animate>
+</circle>
+<!-- Core Blue Beacon -->
+<circle class="shadow-md" cx="0" cy="0" fill="#2563eb" r="7" stroke="#ffffff" stroke-width="2.5"></circle>
+<circle cx="0" cy="0" fill="#ffffff" r="2.5"></circle>
+</g>
+<!-- LIVE BUS MARKER: Bus 108 (Delay / Congestion) -->
+<g id="busMarker108" transform="translate(130, 150)">
+<circle cx="0" cy="0" fill="#fee2e2" r="14"></circle>
+<circle cx="0" cy="0" fill="#ef4444" r="9" stroke="#ffffff" stroke-width="2"></circle>
+<polygon fill="#ffffff" points="-3,-2 3,-2 0,4"></polygon>
+<!-- Delay Badge -->
+<rect fill="#ef4444" height="16" rx="4" width="60" x="10" y="-18"></rect>
+<text fill="#ffffff" font-family="Inter" font-size="8.5" font-weight="700" x="14" y="-7">108 • +8m</text>
+</g>
+<!-- LIVE BUS MARKER: Feeder 88 (Cyan On Track) -->
+<g id="busMarker88" transform="translate(172, 260)">
+<circle cx="0" cy="0" fill="#00788c" r="9" stroke="#ffffff" stroke-width="2"></circle>
+<polygon fill="#ffffff" points="-3,-2 3,-2 0,4" transform="rotate(180)"></polygon>
+<!-- Tag -->
+<rect fill="#00788c" height="15" rx="3" width="38" x="-42" y="-18"></rect>
+<text fill="#ffffff" font-family="Inter" font-size="8.5" font-weight="600" x="-38" y="-7">F-88</text>
+</g>
+<!-- ACTIVE TARGET: Bus 42 Express (Approaching User / Rapid Tracking) -->
+<g class="cursor-pointer" id="busMarker42" transform="translate(172, 118)">
+<!-- Live Velocity Ripple -->
+<circle cx="0" cy="0" fill="none" r="18" stroke="#22c55e" stroke-width="2">
+<animate attributeName="r" dur="1.6s" repeatCount="indefinite" values="10;22"></animate>
+<animate attributeName="opacity" dur="1.6s" repeatCount="indefinite" values="0.8;0"></animate>
+</circle>
+<!-- Marker Housing -->
+<circle class="shadow-lg" cx="0" cy="0" fill="#22c55e" r="12" stroke="#ffffff" stroke-width="2.5"></circle>
+<path d="M-4,-4 L4,-4 L4,2 L-4,2 Z M-3,2 L-3,4 M3,2 L3,4" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-width="1.4"></path>
+<!-- Floating Telemetry Indicator -->
+<g transform="translate(16, -18)">
+<rect fill="#0b1c30" fill-opacity="0.92" filter="url(#glowBlue)" height="20" rx="5" width="86" x="0" y="0"></rect>
+<circle cx="8" cy="10" fill="#22c55e" r="3"></circle>
+<text fill="#ffffff" font-family="Inter" font-size="9.5" font-weight="700" x="16" y="13.5">42 Exp • 38 km/h</text>
+</g>
+</g>
+</svg>
+<!-- Floating Map Control Dock (Right Edge) -->
+<div class="absolute right-4 top-4 flex flex-col gap-2.5 z-20">
+<button aria-label="Toggle Traffic &amp; 3D Layers" class="w-11 h-11 rounded-full bg-surface-container-lowest/95 backdrop-blur-md shadow-md text-on-surface flex items-center justify-center hover:bg-surface-container transition-transform active:scale-95" onclick="toggleMapLayer(this)">
+<span class="material-symbols-outlined text-[20px]">layers</span>
+</button>
+<button aria-label="Recenter on current bus" class="w-11 h-11 rounded-full bg-surface-container-lowest/95 backdrop-blur-md shadow-md text-primary flex items-center justify-center hover:bg-surface-container transition-transform active:scale-95" onclick="recenterMap()">
+<span class="material-symbols-outlined text-[20px]">near_me</span>
+</button>
+<div class="flex flex-col rounded-full bg-surface-container-lowest/95 backdrop-blur-md shadow-md overflow-hidden">
+<button aria-label="Zoom in" class="w-11 h-10 text-on-surface flex items-center justify-center hover:bg-surface-container transition-colors active:scale-95" onclick="zoomMap(1)">
+<span class="material-symbols-outlined text-[19px]">add</span>
+</button>
+<div class="w-6 h-[1px] bg-outline-variant/30 self-center"></div>
+<button aria-label="Zoom out" class="w-11 h-10 text-on-surface flex items-center justify-center hover:bg-surface-container transition-colors active:scale-95" onclick="zoomMap(-1)">
+<span class="material-symbols-outlined text-[19px]">remove</span>
+</button>
+</div>
+</div>
+<!-- Active Speed HUD Overlay (Bottom Left Map Floor) -->
+<div class="absolute left-4 bottom-5 z-20 flex items-center gap-2 bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1.5 rounded-full shadow-sm">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-on-surface tracking-wider uppercase">Live Telemetry Feed</span>
+</div>
+</div>
+<!-- Draggable Bottom Sheet: Transit Telemetry Card -->
+<section class="relative w-full -mt-3 bg-surface-container-lowest rounded-t-3xl shadow-[0_-8px_30px_rgba(11,28,48,0.08)] px-margin pt-3 pb-space-lg flex flex-col gap-space-md z-30">
+<!-- Grab Bar Indicator -->
+<div class="w-10 h-1 rounded-full bg-outline-variant/60 mx-auto cursor-grab active:cursor-grabbing"></div>
+<!-- Selected Bus Header & Live ETA Status -->
+<div class="flex items-start justify-between gap-3">
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-0.5 rounded-md bg-on-secondary-fixed text-on-primary font-headline-sm text-headline-sm tracking-tight">42</span>
+<span class="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight">Line 42 Express</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+          Bound for Tech Park Innovation Hub
+        </span>
+</div>
+<!-- Live ETA Badge -->
+<div class="flex flex-col items-end shrink-0">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 font-label-sm text-label-sm uppercase tracking-wider">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
+          On Schedule
+        </span>
+<span class="font-headline-md text-headline-md text-primary font-bold mt-0.5">2m 40s</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Platform 3A</span>
+</div>
+</div>
+<!-- Real-Time Bus Telemetry Bento Row -->
+<div class="grid grid-cols-3 gap-2.5">
+<!-- Speed Metric -->
+<div class="p-2.5 rounded-2xl bg-surface-container flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm">Velocity</span>
+<span class="material-symbols-outlined text-[16px] text-primary">speed</span>
+</div>
+<div class="mt-1">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">38</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">km/h</span>
+</div>
+</div>
+<!-- Capacity & Crowding Metric -->
+<div class="p-2.5 rounded-2xl bg-surface-container flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm">Occupancy</span>
+<span class="material-symbols-outlined text-[16px] text-emerald-600">airline_seat_recline_normal</span>
+</div>
+<div class="mt-1">
+<span class="font-headline-sm text-headline-sm text-emerald-700 font-bold">24 Open</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant block">Low Crowd</span>
+</div>
+</div>
+<!-- Next Terminal / Intermodal -->
+<div class="p-2.5 rounded-2xl bg-surface-container flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm">Next Stop</span>
+<span class="material-symbols-outlined text-[16px] text-tertiary">transfer_within_a_station</span>
+</div>
+<div class="mt-1 truncate">
+<span class="font-label-md text-label-md text-on-surface truncate block font-bold">Grand Central</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Line 108 Link</span>
+</div>
+</div>
+</div>
+<!-- 3-Step Live Stop Progress Timeline -->
+<div class="bg-surface-container-low rounded-2xl p-3.5 flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Route Progress Vector</span>
+<span class="font-label-sm text-label-sm text-primary font-semibold">1 Stop Away</span>
+</div>
+<div class="relative flex items-center justify-between mt-2 px-2">
+<!-- Connecting Progress Bar -->
+<div class="absolute left-6 right-6 top-3 h-1 bg-surface-container-highest rounded-full -z-0">
+<div class="w-1/3 h-full bg-primary-container rounded-full"></div>
+</div>
+<!-- Stop 1: Current / Boarding -->
+<div class="flex flex-col items-center gap-1.5 z-10">
+<div class="w-6 h-6 rounded-full bg-primary-container text-on-primary flex items-center justify-center ring-4 ring-surface-container-lowest shadow-sm">
+<span class="material-symbols-outlined text-[14px]">directions_bus</span>
+</div>
+<div class="flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface font-semibold">Grand Central</span>
+<span class="font-label-sm text-label-sm text-emerald-600 font-bold">Boarding</span>
+</div>
+</div>
+<!-- Stop 2: Intermediate Transfer -->
+<div class="flex flex-col items-center gap-1.5 z-10">
+<div class="w-5 h-5 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center ring-4 ring-surface-container-lowest">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+</div>
+<div class="flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface font-semibold">Financial Plaza</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">4 min</span>
+</div>
+</div>
+<!-- Stop 3: Final Destination -->
+<div class="flex flex-col items-center gap-1.5 z-10">
+<div class="w-5 h-5 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center ring-4 ring-surface-container-lowest">
+<span class="material-symbols-outlined text-[12px] text-tertiary">flag</span>
+</div>
+<div class="flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface font-semibold">Tech Park</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">18 min</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Primary & Secondary Commuter Action Buttons -->
+<div class="flex items-center gap-3 pt-1">
+<button class="flex-1 py-3 px-4 rounded-xl bg-primary-container text-on-primary font-label-lg text-label-lg flex items-center justify-center gap-2 shadow-md hover:opacity-95 active:scale-[0.98] transition-all" onclick="trackJourney(this)">
+<span class="material-symbols-outlined text-[20px]">navigation</span>
+<span>Track Full Journey</span>
+</button>
+<button aria-label="Share live ETA" class="py-3 px-4 rounded-xl bg-surface-container text-on-surface font-label-lg text-label-lg flex items-center justify-center gap-1.5 hover:bg-surface-container-high active:scale-[0.98] transition-all" onclick="shareLiveEta(this)">
+<span class="material-symbols-outlined text-[19px] text-on-surface-variant">share</span>
+<span>Share ETA</span>
+</button>
+</div>
+</section>
+</div>
+<script>
+  function selectFilter(btn, category) {
+    document.querySelectorAll('.filter-chip').forEach(el => {
+      el.className = 'filter-chip shrink-0 px-3.5 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-md text-label-md flex items-center gap-1.5 shadow-sm hover:bg-surface-container transition-all';
+    });
+    btn.className = 'filter-chip shrink-0 px-3.5 py-1.5 rounded-full bg-primary-container text-on-primary font-label-md text-label-md flex items-center gap-1.5 shadow-sm active:scale-95 transition-all';
+  }
+
+  function triggerGpsPulse() {
+    const userMarker = document.getElementById('userGpsMarker');
+    if (userMarker) {
+      userMarker.style.transition = 'transform 0.5s ease-out';
+      userMarker.setAttribute('transform', 'translate(200, 180) scale(1.15)');
+      setTimeout(() => {
+        userMarker.setAttribute('transform', 'translate(196, 175) scale(1)');
+      }, 500);
+    }
+  }
+
+  function recenterMap() {
+    triggerGpsPulse();
+  }
+
+  function toggleMapLayer(btn) {
+    const icon = btn.querySelector('.material-symbols-outlined');
+    if (icon) {
+      icon.style.transform = icon.style.transform === 'rotate(180deg)' ? 'rotate(0deg)' : 'rotate(180deg)';
+      icon.style.transition = 'transform 0.3s ease';
+    }
+  }
+
+  function zoomMap(delta) {
+    const bus = document.getElementById('busMarker42');
+    if (bus) {
+      bus.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+      const currentScale = delta > 0 ? 'scale(1.1)' : 'scale(0.95)';
+      bus.setAttribute('transform', 'translate(172, 118) ' + currentScale);
+      setTimeout(() => {
+        bus.setAttribute('transform', 'translate(172, 118) scale(1)');
+      }, 400);
+    }
+  }
+
+  function trackJourney(btn) {
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<span class="material-symbols-outlined text-[20px] animate-spin">sync</span><span>Syncing Route...</span>';
+    setTimeout(() => {
+      btn.innerHTML = '<span class="material-symbols-outlined text-[20px]">check_circle</span><span>Tracking Active</span>';
+      btn.classList.remove('bg-primary-container');
+      btn.classList.add('bg-emerald-600');
+    }, 800);
+  }
+
+  function shareLiveEta(btn) {
+    const originalContent = btn.innerHTML;
+    btn.innerHTML = '<span class="material-symbols-outlined text-[19px] text-emerald-600">done</span><span>Copied!</span>';
+    setTimeout(() => {
+      btn.innerHTML = originalContent;
+    }, 1600);
+  }
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/85 backdrop-blur-xl shadow-[0_-4px_20px_rgba(11,28,48,0.06)]" data-active-classes="text-primary-container font-semibold"><div class="flex justify-around items-center h-16 px-space-xs"><a class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[44px] text-on-surface-variant hover:text-primary transition-colors" data-path="home" href="#"><span class="material-symbols-outlined text-[24px]">home</span><span class="font-label-sm text-label-sm">Home</span></a><a class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[44px] text-on-surface-variant hover:text-primary transition-colors" data-path="explore" href="#"><span class="material-symbols-outlined text-[24px]">explore</span><span class="font-label-sm text-label-sm">Explore</span></a><a aria-current="page" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[44px] transition-colors text-primary-container font-semibold" data-path="live-tracking" href="#"><span class="material-symbols-outlined text-[24px]">directions_bus</span><span class="font-label-sm text-label-sm">Live Track</span></a><a class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[44px] text-on-surface-variant hover:text-primary transition-colors" data-path="tickets-and-passes" href="#"><span class="material-symbols-outlined text-[24px]">confirmation_number</span><span class="font-label-sm text-label-sm">Tickets</span></a><a class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[44px] text-on-surface-variant hover:text-primary transition-colors" data-path="profile" href="#"><span class="material-symbols-outlined text-[24px]">person</span><span class="font-label-sm text-label-sm">Profile</span></a></div></nav>
+
+</body></html>

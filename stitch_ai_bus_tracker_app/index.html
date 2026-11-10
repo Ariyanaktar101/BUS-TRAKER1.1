@@ -1,0 +1,2371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Where Is My Bus — TransAI Mobility</title>
+
+    <!-- Material Symbols & Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS with custom design tokens -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                "colors": {
+                    "surface": "#f8f9ff",
+                    "surface-dim": "#cbdbf5",
+                    "surface-bright": "#f8f9ff",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-low": "#eff4ff",
+                    "surface-container": "#e5eeff",
+                    "surface-container-high": "#dce9ff",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-surface": "#0b1c30",
+                    "on-surface-variant": "#434655",
+                    "inverse-surface": "#213145",
+                    "inverse-on-surface": "#eaf1ff",
+                    "outline": "#737686",
+                    "outline-variant": "#c3c6d7",
+                    "surface-tint": "#0053db",
+                    "primary": "#004ac6",
+                    "on-primary": "#ffffff",
+                    "primary-container": "#2563eb",
+                    "on-primary-container": "#eeefff",
+                    "inverse-primary": "#b4c5ff",
+                    "secondary": "#565e71",
+                    "on-secondary": "#ffffff",
+                    "secondary-container": "#dbe2f9",
+                    "on-secondary-container": "#5c6477",
+                    "tertiary": "#005e6e",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-container": "#00788c",
+                    "on-tertiary-container": "#d7f6ff",
+                    "error": "#ba1a1a",
+                    "on-error": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-error-container": "#93000a",
+                    "primary-fixed": "#dbe1ff",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "on-primary-fixed": "#00174b",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "secondary-fixed": "#dbe2f9",
+                    "secondary-fixed-dim": "#bfc6dc",
+                    "on-secondary-fixed": "#141b2c",
+                    "on-secondary-fixed-variant": "#3f4759",
+                    "tertiary-fixed": "#acedff",
+                    "tertiary-fixed-dim": "#4cd7f6",
+                    "on-tertiary-fixed": "#001f26",
+                    "on-tertiary-fixed-variant": "#004e5c",
+                    "background": "#f8f9ff",
+                    "on-background": "#0b1c30",
+                    "surface-variant": "#d3e4fe"
+                },
+                "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+                },
+                "spacing": {
+                    "gutter-desktop": "2rem",
+                    "space-lg": "1.5rem",
+                    "margin": "1rem",
+                    "space-xs": "0.25rem",
+                    "space-md": "1rem",
+                    "margin-desktop": "3rem",
+                    "space-xl": "2rem",
+                    "space-sm": "0.5rem",
+                    "gutter-tablet": "1.5rem",
+                    "gutter": "1rem",
+                    "margin-tablet": "2rem"
+                },
+                "fontFamily": {
+                    "headline-lg": ["Inter", "sans-serif"],
+                    "body-lg": ["Inter", "sans-serif"],
+                    "headline-md": ["Inter", "sans-serif"],
+                    "label-lg": ["Inter", "sans-serif"],
+                    "body-sm": ["Inter", "sans-serif"],
+                    "headline-xl": ["Inter", "sans-serif"],
+                    "headline-xl-mobile": ["Inter", "sans-serif"],
+                    "headline-sm": ["Inter", "sans-serif"],
+                    "label-md": ["Inter", "sans-serif"],
+                    "label-sm": ["Inter", "sans-serif"],
+                    "body-md": ["Inter", "sans-serif"]
+                }
+            }
+        }
+    };
+    </script>
+
+    <style>
+        @layer base {
+            html, body {
+                margin: 0;
+                padding: 0;
+                font-family: 'Inter', -apple-system, sans-serif;
+                background: #f8f9ff;
+                color: #0b1c30;
+                overflow-x: hidden;
+            }
+            ::-webkit-scrollbar {
+                width: 6px;
+                height: 6px;
+                display: none;
+            }
+        }
+
+        /* Responsive Viewport Visibility */
+        @media (min-width: 1024px) {
+            .mobile-only-view {
+                display: none !important;
+            }
+            .desktop-only-view {
+                display: block !important;
+            }
+        }
+
+        @media (max-width: 1023px) {
+            .mobile-only-view {
+                display: block !important;
+            }
+            .desktop-only-view {
+                display: none !important;
+            }
+        }
+
+        /* Turnstile QR Modal styles */
+        #pass-modal {
+            transition: opacity 0.3s ease;
+        }
+        #pass-sheet {
+            transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface antialiased">
+
+    <!-- ========================================================================= -->
+    <!-- 1. DESKTOP VIEW (Displayed naturally on Laptops & Desktops: width >= 1024px) -->
+    <!-- ========================================================================= -->
+    <div id="desktopAppContainer" class="desktop-only-view w-full min-h-screen">
+        <aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-lowest z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex flex-col"><div class="h-16 px-space-lg flex items-center gap-space-sm bg-surface-container-lowest"><img alt="A modern, sleek transit bus logo for &quot;Where Is My Bus&quot; featuring a stylized modern bus front with radar/location pin pulse rings in vibrant blue and emerald green accents.. Brand logo. - Primary color: #2563eb - Font: inter - Mode: light - Roundness: rounded-md" class="h-8 w-auto object-contain" src="assets/img/logo_desktop.png"><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface leading-tight tracking-tight">Where Is My Bus</span><span class="font-label-sm text-label-sm text-tertiary font-bold tracking-wider uppercase">TransAI Mobility</span></div></div><div class="px-space-md py-space-sm"><div class="px-space-sm py-space-xs mb-space-sm flex items-center justify-between rounded-lg bg-surface-container-low"><div class="flex items-center gap-space-xs"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Grid Live</span></div><span class="font-label-sm text-label-sm text-tertiary font-bold">99.8% Sync</span></div><span class="px-space-sm font-label-sm text-label-sm text-outline uppercase tracking-wider">Navigation</span><nav class="mt-space-xs flex flex-col gap-1" data-active-classes="bg-primary-container text-on-primary-container font-label-lg rounded-xl shadow-[0_4px_20px_-2px_rgba(16,24,40,0.06)]"><a aria-current="page" class="flex items-center gap-space-sm px-space-md py-3 transition-all bg-primary-container text-on-primary-container font-label-lg rounded-xl shadow-[0_4px_20px_-2px_rgba(16,24,40,0.06)]" data-path="live-transit-radar" href="#"><span class="material-symbols-outlined text-[20px]">radar</span><span>Live Transit Radar &amp; Map</span></a><a class="flex items-center gap-space-sm px-space-md py-3 rounded-xl font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="route-planner" href="#"><span class="material-symbols-outlined text-[20px]">alt_route</span><span>Route Planner</span></a><a class="flex items-center justify-between px-space-md py-3 rounded-xl font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="buy-tickets-and-passes" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[20px]">confirmation_number</span><span>Buy Tickets &amp; Passes</span></div><span class="font-label-sm text-label-sm px-space-xs py-0.5 rounded-full bg-surface-container text-primary font-bold">₹ INR</span></a><a class="flex items-center gap-space-sm px-space-md py-3 rounded-xl font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="fleet-telemetry" href="#"><span class="material-symbols-outlined text-[20px]">sensors</span><span>Fleet Telemetry</span></a><a class="flex items-center justify-between px-space-md py-3 rounded-xl font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="ai-crowds-and-delays" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[20px]">auto_awesome</span><span>AI Crowds &amp; Delays</span></div><span class="w-2 h-2 rounded-full bg-tertiary"></span></a><a class="flex items-center gap-space-sm px-space-md py-3 rounded-xl font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="commuter-profile" href="#"><span class="material-symbols-outlined text-[20px]">account_box</span><span>Commuter Profile</span></a></nav></div></div><div class="p-space-md mx-space-md mb-space-md rounded-xl bg-surface-container-low flex flex-col gap-space-xs"><div class="flex items-center justify-between"><span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">TransAI Node</span><span class="font-label-sm text-label-sm text-tertiary font-bold">v4.2-IND</span></div><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[16px] text-tertiary">satellite_alt</span><span class="font-body-sm text-body-sm text-on-surface-variant">RTK GPS Fixed • ±0.4m</span></div></div></aside><div class="pl-72"><header class="fixed top-0 left-72 right-0 h-16 bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-xl gap-space-md"><div class="flex items-center gap-space-md flex-1 max-w-xl"><div class="relative w-full"><span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span><input class="w-full pl-9 pr-space-md py-2 rounded-xl bg-surface-container-low text-on-surface placeholder:text-outline font-body-sm text-body-sm focus:outline-none focus:bg-surface-container-lowest focus:shadow-[0_0_0_2px_#2563eb] transition-all" placeholder="Search bus numbers, lines, metro stations, or stops..." type="text"></div><div class="flex items-center gap-space-xs bg-surface-container-low px-space-sm py-1.5 rounded-lg"><span class="material-symbols-outlined text-primary text-[18px]">location_city</span><select class="bg-transparent font-label-md text-label-md text-on-surface focus:outline-none cursor-pointer pr-1"><option value="mumbai">Mumbai Metro</option><option value="delhi">Delhi NCR Grid</option><option value="bengaluru">Bengaluru BMTC</option></select></div></div><div class="flex items-center gap-space-md"><div class="hidden xl:flex items-center gap-space-sm bg-surface-container-low px-space-sm py-1.5 rounded-xl"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500"></span><span class="font-label-sm text-label-sm text-on-surface font-semibold">GPS Sync Active</span></div><span class="text-outline-variant">|</span><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-tertiary"></span><span class="font-label-sm text-label-sm text-on-surface font-semibold">Telemetry: 48ms</span></div></div><div class="flex items-center gap-space-xs px-space-md py-1.5 rounded-xl bg-primary-container text-on-primary-container shadow-[0_4px_20px_-2px_rgba(16,24,40,0.06)]"><span class="material-symbols-outlined text-[18px]">account_balance_wallet</span><div class="flex flex-col leading-none"><span class="font-label-sm text-label-sm opacity-80 uppercase text-[9px]">Transit Pass</span><span class="font-label-md text-label-md font-bold"><span class="wallet-balance-val">₹350.00</span></span></div></div><button aria-label="Notifications" class="relative p-2 rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full"></span></button><div class="flex items-center gap-space-xs pl-space-xs"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="relative pt-16 w-full min-h-screen bg-surface"><div class="flex flex-col w-full">
+<!-- Dynamic Styles for Map Animation & Pulses -->
+<style>
+    @keyframes radarSweep {
+      0% { transform: scale(0.95); opacity: 0.85; }
+      50% { transform: scale(1.6); opacity: 0.15; }
+      100% { transform: scale(2.2); opacity: 0; }
+    }
+    @keyframes busPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
+      50% { box-shadow: 0 0 0 8px rgba(37, 99, 235, 0); }
+    }
+    @keyframes qrGlow {
+      0%, 100% { filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.4)); }
+      50% { filter: drop-shadow(0 0 16px rgba(16, 185, 129, 0.7)); }
+    }
+    .radar-ring {
+      animation: radarSweep 3s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+    }
+    .bus-live-ping {
+      animation: busPulse 2s infinite;
+    }
+  </style>
+<!-- Top Telemetry Subheader / Control Ribbon -->
+<header class="w-full bg-surface-container-lowest shadow-sm px-space-lg py-3 flex flex-wrap items-center justify-between gap-y-3 z-20">
+<div class="flex items-center gap-space-md flex-wrap">
+<!-- Corridor Selector Pill -->
+<div class="flex items-center gap-space-sm bg-surface-container-low px-3 py-1.5 rounded-xl hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined text-primary text-[20px]">directions_bus</span>
+<div class="flex flex-col">
+<div class="flex items-center gap-1">
+<span class="font-label-md text-label-md text-on-surface">Bengaluru Urban Corridor</span>
+<span class="font-label-sm text-label-sm text-outline">(BMTC &amp; Metro)</span>
+<span class="material-symbols-outlined text-[16px] text-outline ml-1 cursor-pointer">arrow_drop_down</span>
+</div>
+<span class="font-label-sm text-[10px] text-on-surface-variant leading-none">Sub-zone: Central Hub East • RTK Sync</span>
+</div>
+</div>
+<!-- Live Network Pill -->
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-800">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+<span class="font-label-md text-label-md font-semibold">418 Buses Live</span>
+<span class="text-emerald-400">•</span>
+<span class="font-label-sm text-label-sm">99.2% Network On-Time</span>
+</div>
+<!-- Telemetry Stats Chips -->
+<div class="hidden xl:flex items-center gap-space-xs">
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px] text-primary">radar</span>
+<span>Radar: <strong class="text-on-surface">5.2 km</strong></span>
+</div>
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px] text-tertiary">pace</span>
+<span>Avg Delay: <strong class="text-on-surface">1.4 min</strong></span>
+</div>
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px] text-emerald-600">verified</span>
+<span class="text-emerald-700 font-semibold">Pass Active</span>
+</div>
+</div>
+</div>
+<!-- Right Quick Wallet & Sync Actions -->
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-3 bg-surface-container-low px-3 py-1.5 rounded-xl">
+<div class="w-8 h-8 rounded-lg bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-sm shadow-sm">
+          ₹
+        </div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface leading-none"><span class="wallet-balance-val">₹350.00</span></span>
+<span class="px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-800 font-label-sm text-[9px] uppercase font-bold tracking-wide">NFC Ready</span>
+</div>
+<span class="font-label-sm text-[10px] text-on-surface-variant">Tap-to-Ride UPI Linked</span>
+</div>
+<button class="ml-2 px-2.5 py-1 bg-surface-container-lowest text-primary hover:bg-primary hover:text-on-primary transition-all rounded-lg font-label-md text-label-md shadow-sm" id="quickTopUpTrigger">
+          + Add Cash
+        </button>
+</div>
+<div class="flex items-center gap-1">
+<button class="p-2 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-all" title="Refresh Live Vectors">
+<span class="material-symbols-outlined text-[20px]">sync</span>
+</button>
+<button class="p-2 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-all" title="Grid Settings">
+<span class="material-symbols-outlined text-[20px]">tune</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Multi-Pane 3-Column Ergonomic Command Grid -->
+<div class="w-full grid grid-cols-1 xl:grid-cols-12 gap-5 p-space-md lg:p-space-lg">
+<!-- ================= LEFT COLUMN: Trip Planner & Route Hub (4 Cols) ================= -->
+<section class="xl:col-span-4 flex flex-col gap-4">
+<!-- Waypoint Routing Box -->
+<div class="bg-surface-container-lowest p-space-md rounded-2xl shadow-sm flex flex-col gap-3 relative overflow-hidden">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">alt_route</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Precision Route Planner</h2>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-primary-container/10 text-primary font-label-sm text-label-sm uppercase font-bold tracking-wider">AI Route-Engine 4.2</span>
+</div>
+<!-- Inputs container with swap connector -->
+<div class="relative flex flex-col gap-2.5 mt-1">
+<!-- Waypoint Line Graphic -->
+<div class="absolute left-4 top-5 bottom-5 w-0.5 bg-outline-variant/50 flex flex-col justify-between items-center pointer-events-none">
+<span class="w-2 h-2 rounded-full bg-emerald-500 -mt-1 shadow-sm"></span>
+<span class="w-2 h-2 rounded-full bg-error -mb-1 shadow-sm"></span>
+</div>
+<!-- Origin -->
+<div class="flex items-center pl-8 pr-2 py-2 rounded-xl bg-surface-container-low focus-within:bg-surface-container-lowest focus-within:shadow-[0_0_0_2px_#2563eb] transition-all">
+<div class="flex flex-col flex-1 min-w-0">
+<span class="font-label-sm text-[10px] text-on-surface-variant uppercase tracking-wider font-semibold">Origin Stop / Station</span>
+<input class="bg-transparent font-body-md text-body-md text-on-surface focus:outline-none truncate font-medium" id="originInput" type="text" value="Majestic Bay 3A (Grand Central Concourse)">
+</div>
+<button class="p-1 text-on-surface-variant hover:text-primary transition-colors" title="Locate Me">
+<span class="material-symbols-outlined text-[18px]">my_location</span>
+</button>
+</div>
+<!-- Swap floating icon -->
+<div class="absolute right-5 top-1/2 -translate-y-1/2 z-10">
+<button class="w-8 h-8 rounded-full bg-surface-container-lowest shadow-md flex items-center justify-center text-on-surface hover:text-primary hover:rotate-180 transition-all duration-300" id="swapRoutesBtn" title="Swap Origin &amp; Destination">
+<span class="material-symbols-outlined text-[18px]">swap_vert</span>
+</button>
+</div>
+<!-- Destination -->
+<div class="flex items-center pl-8 pr-2 py-2 rounded-xl bg-surface-container-low focus-within:bg-surface-container-lowest focus-within:shadow-[0_0_0_2px_#2563eb] transition-all">
+<div class="flex flex-col flex-1 min-w-0">
+<span class="font-label-sm text-[10px] text-on-surface-variant uppercase tracking-wider font-semibold">Destination Corridor</span>
+<input class="bg-transparent font-body-md text-body-md text-on-surface focus:outline-none truncate font-medium" id="destInput" type="text" value="Electronic City Tech Zone / Cyber Park Bldg 4">
+</div>
+<button class="p-1 text-on-surface-variant hover:text-error transition-colors" title="Clear Destination">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</div>
+<!-- Quick Landmark Shortcuts -->
+<div class="flex flex-wrap items-center gap-1.5 pt-1">
+<span class="font-label-sm text-[11px] text-outline mr-1">Frequent:</span>
+<button class="shortcut-tag px-2.5 py-1 rounded-lg bg-surface-container-low hover:bg-surface-container font-label-sm text-label-sm text-on-surface flex items-center gap-1 transition-colors">
+<span>💼 Tech Park</span>
+</button>
+<button class="shortcut-tag px-2.5 py-1 rounded-lg bg-surface-container-low hover:bg-surface-container font-label-sm text-label-sm text-on-surface flex items-center gap-1 transition-colors">
+<span>🏠 Indiranagar</span>
+</button>
+<button class="shortcut-tag px-2.5 py-1 rounded-lg bg-surface-container-low hover:bg-surface-container font-label-sm text-label-sm text-on-surface flex items-center gap-1 transition-colors">
+<span>✈️ Airport KIA</span>
+</button>
+<button class="shortcut-tag px-2.5 py-1 rounded-lg bg-surface-container-low hover:bg-surface-container font-label-sm text-label-sm text-on-surface flex items-center gap-1 transition-colors">
+<span>🏥 Manipal</span>
+</button>
+</div>
+<!-- Filter Criteria Chips -->
+<div class="flex items-center gap-2 pt-2 overflow-x-auto pb-1">
+<button class="filter-chip px-3 py-1.5 rounded-full bg-primary text-on-primary font-label-sm text-label-sm flex items-center gap-1 shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-[15px]">bolt</span>
+<span>Fastest Route</span>
+</button>
+<button class="filter-chip px-3 py-1.5 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant font-label-sm text-label-sm flex items-center gap-1 shrink-0 transition-all">
+<span class="material-symbols-outlined text-[15px]">sync_disabled</span>
+<span>Zero Transfers</span>
+</button>
+<button class="filter-chip px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-800 font-label-sm text-label-sm flex items-center gap-1 shrink-0">
+<span class="material-symbols-outlined text-[15px]">airline_seat_recline_extra</span>
+<span>High Seating</span>
+</button>
+</div>
+</div>
+<!-- Recommended Routes List -->
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between px-1">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-bold">Recommended Live Corridors (3 Found)</span>
+<span class="font-label-sm text-[11px] text-tertiary flex items-center gap-1 cursor-pointer">
+<span class="material-symbols-outlined text-[14px]">tune</span> Sort by ETA
+          </span>
+</div>
+<!-- Option 1: BEST PICK -->
+<div class="bg-surface-container-lowest p-space-md rounded-2xl shadow-sm hover:shadow-md transition-all flex flex-col gap-3 relative cursor-pointer ring-2 ring-primary">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="px-2.5 py-1 rounded-lg bg-on-background text-surface font-headline-sm text-headline-sm font-bold tracking-tight">42 EXP</span>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg font-bold text-on-surface">Line 42 Express (AC Volvo)</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Departs in <strong class="text-primary font-bold">3 min</strong> • Bay 3A</span>
+</div>
+</div>
+<div class="text-right flex flex-col items-end">
+<span class="font-headline-sm text-headline-sm font-bold text-primary">₹25.00</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">ETA 18 min</span>
+</div>
+</div>
+<!-- Seating status & arrival pill -->
+<div class="flex items-center justify-between bg-surface-container-low px-3 py-2 rounded-xl">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-emerald-800 font-semibold">38 Seats Available (24% load)</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface font-bold">Arrives 8:50 AM</span>
+</div>
+<!-- Step Progression Timeline -->
+<div class="flex items-center justify-between gap-2 text-on-surface-variant text-[11px] font-label-sm pt-1">
+<div class="flex items-center gap-1 text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-outline">directions_walk</span>
+<span>Walk 2m</span>
+</div>
+<span class="h-0.5 flex-1 bg-primary rounded-full"></span>
+<div class="flex items-center gap-1 text-primary font-bold">
+<span class="material-symbols-outlined text-[16px]">directions_bus</span>
+<span>Express (14m)</span>
+</div>
+<span class="h-0.5 flex-1 bg-outline-variant/60 rounded-full"></span>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-outline">directions_walk</span>
+<span>Walk 2m</span>
+</div>
+</div>
+<!-- Bottom Action Buttons -->
+<div class="flex items-center gap-2 pt-1">
+<button class="flex-1 py-2 rounded-xl bg-primary text-on-primary font-label-md text-label-md font-bold flex items-center justify-center gap-2 shadow-sm hover:bg-primary-container transition-all">
+<span class="material-symbols-outlined text-[18px]">navigation</span>
+<span>Start Navigation</span>
+</button>
+<button class="p-2 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-primary hover:bg-surface-container transition-all" title="Pin route">
+<span class="material-symbols-outlined text-[20px]">bookmark</span>
+</button>
+</div>
+</div>
+<!-- Option 2: Line 108 City Ring -->
+<div class="bg-surface-container-lowest p-space-md rounded-2xl shadow-sm hover:shadow-md transition-all flex flex-col gap-3 cursor-pointer">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="px-2.5 py-1 rounded-lg bg-surface-container-high text-on-surface font-headline-sm text-headline-sm font-bold">108</span>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg font-bold text-on-surface">Line 108 City Ring</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Departs in 6 min • Bay 1B</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">₹20.00</span>
+<div class="font-label-sm text-label-sm text-on-surface-variant">ETA 24 min</div>
+</div>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm">
+<span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-800 font-semibold">High Comfort • AC</span>
+<span class="text-on-surface">Arrives 8:56 AM</span>
+</div>
+</div>
+<!-- Option 3: Multi-modal Feeder (with Disruption Alert) -->
+<div class="bg-surface-container-lowest p-space-md rounded-2xl shadow-sm hover:shadow-md transition-all flex flex-col gap-3 cursor-pointer">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="px-2 py-1 rounded-lg bg-surface-container text-on-surface font-label-lg text-label-lg font-bold">15X + M</span>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg font-bold text-on-surface">Line 15X + Metro Feeder</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">1 Transfer • Platform 4</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">₹35.00</span>
+<div class="font-label-sm text-label-sm text-on-surface-variant">ETA 29 min</div>
+</div>
+</div>
+<div class="flex items-center gap-2 px-2.5 py-1.5 rounded-xl bg-error/10 text-error font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]">warning</span>
+<span>Caution: Bridge roadwork delay (+8m congestion)</span>
+</div>
+</div>
+<!-- Favorite Corridor Action -->
+<button class="w-full py-2.5 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-label-md text-label-md font-bold flex items-center justify-center gap-2 transition-all">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+<span>Add Corridor to Daily Smart Tracker</span>
+</button>
+</div>
+</section>
+<!-- ================= MIDDLE COLUMN: Interactive Transit Map & Radar Canvas (5 Cols) ================= -->
+<section class="xl:col-span-5 flex flex-col gap-4">
+<div class="bg-surface-container-lowest rounded-2xl shadow-sm p-3 relative flex flex-col h-[680px] overflow-hidden">
+<!-- Live Map Telemetry Header -->
+<div class="flex items-center justify-between px-3 py-2 z-10 bg-surface-container-lowest/90 backdrop-blur-md rounded-xl shadow-sm">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+<span class="font-label-lg text-label-lg font-bold text-on-surface">Live Vector Radar</span>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-tertiary-container/15 text-tertiary font-semibold uppercase text-[10px]">Aether Grid v4</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Zoom: 14x</span>
+<span class="w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
+<span class="font-label-sm text-label-sm text-emerald-700 font-semibold">RTK Locked</span>
+</div>
+</div>
+<!-- Vector Map Visualizer Canvas -->
+<div class="relative flex-1 w-full mt-2 rounded-xl bg-[#eef4fb] overflow-hidden select-none">
+<!-- Subtle Road & Corridor Grid Graphic (Inline SVG) -->
+<svg class="absolute inset-0 w-full h-full opacity-80" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<pattern height="40" id="grid" patternUnits="userSpaceOnUse" width="40">
+<path d="M 40 0 L 0 0 0 40" fill="none" stroke="#d5e2f1" stroke-width="0.8"></path>
+</pattern>
+</defs>
+<rect fill="url(#grid)" height="100%" width="100%"></rect>
+<!-- Arterial Transit Corridors -->
+<!-- Metro Line Blue -->
+<path d="M -20 280 Q 180 290 320 180 T 640 120" fill="none" stroke="#2563eb" stroke-linecap="round" stroke-opacity="0.85" stroke-width="7"></path>
+<!-- Line 42 Express Emerald -->
+<path d="M 60 520 C 140 440 220 340 320 180 S 520 80 620 40" fill="none" stroke="#10b981" stroke-dasharray="8 4" stroke-linecap="round" stroke-width="5"></path>
+<!-- City Loop Amber -->
+<path d="M 40 120 Q 220 160 320 380 T 580 480" fill="none" stroke="#f59e0b" stroke-linecap="round" stroke-opacity="0.9" stroke-width="4"></path>
+</svg>
+<!-- Interactive Radar Ripple Rings around Main Station -->
+<div class="absolute top-[28%] left-[54%] -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+<div class="w-32 h-32 rounded-full border-2 border-primary/30 radar-ring absolute -inset-8"></div>
+<div class="w-48 h-48 rounded-full border border-primary/20 radar-ring absolute -inset-16"></div>
+</div>
+<!-- Station Nodes with Pulse Indicators -->
+<!-- Station 1: Grand Central / Majestic Bay 3A -->
+<div class="absolute top-[27%] left-[53%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center group cursor-pointer z-10">
+<div class="w-8 h-8 rounded-full bg-surface-container-lowest shadow-lg flex items-center justify-center ring-4 ring-primary">
+<span class="material-symbols-outlined text-primary text-[18px]">domain</span>
+</div>
+<div class="mt-1 px-2.5 py-0.5 bg-on-background/90 text-surface rounded-md shadow-md text-center backdrop-blur-sm">
+<p class="font-label-sm text-[11px] font-bold leading-tight">Grand Central Hub</p>
+<p class="font-label-sm text-[9px] text-emerald-400">Bay 3A Active</p>
+</div>
+</div>
+<!-- Station 2: Electronic City Tech Zone -->
+<div class="absolute bottom-[20%] left-[22%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center group cursor-pointer z-10">
+<div class="w-7 h-7 rounded-full bg-surface-container-lowest shadow-lg flex items-center justify-center ring-4 ring-emerald-500">
+<span class="material-symbols-outlined text-emerald-600 text-[16px]">apartment</span>
+</div>
+<div class="mt-1 px-2 py-0.5 bg-surface-container-lowest text-on-surface rounded shadow text-center">
+<p class="font-label-sm text-[10px] font-bold">Cyber Park Bldg 4</p>
+</div>
+</div>
+<!-- Station 3: Financial District Interchange -->
+<div class="absolute top-[16%] right-[16%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center group cursor-pointer z-10">
+<div class="w-6 h-6 rounded-full bg-surface-container-lowest shadow-md flex items-center justify-center ring-2 ring-tertiary">
+<span class="material-symbols-outlined text-tertiary text-[14px]">account_balance</span>
+</div>
+<div class="mt-1 px-1.5 py-0.5 bg-surface-container-lowest/90 text-on-surface rounded text-[9px] font-semibold shadow">
+              Financial Gate
+            </div>
+</div>
+<!-- LIVE BUS BLIPS (Animated Visual Vector Markers) -->
+<!-- Bus 1: Express 42 (Selected Bus) -->
+<div class="absolute top-[42%] left-[44%] -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center cursor-pointer group">
+<div class="relative">
+<div class="w-10 h-10 rounded-full bg-primary text-on-primary shadow-xl flex items-center justify-center bus-live-ping ring-2 ring-surface-container-lowest">
+<span class="material-symbols-outlined text-[20px]">directions_bus</span>
+</div>
+<span class="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-surface-container-lowest"></span>
+</div>
+<!-- Telemetry tag hover / default bubble -->
+<div class="mt-1.5 px-2.5 py-1 bg-surface-container-lowest/95 backdrop-blur-md rounded-xl shadow-lg border border-primary/20 flex flex-col items-center text-center">
+<div class="flex items-center gap-1.5">
+<span class="font-label-sm text-label-sm font-bold text-primary">Bus 42 Express</span>
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+<span class="font-label-sm text-[10px] text-emerald-700 font-semibold">Low Crowd</span>
+</div>
+<span class="font-label-sm text-[10px] text-on-surface-variant font-medium">38 km/h • Heading East</span>
+</div>
+</div>
+<!-- Bus 2: Line 108 (+8m Delay) -->
+<div class="absolute top-[62%] right-[28%] -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center cursor-pointer">
+<div class="w-8 h-8 rounded-full bg-amber-500 text-on-primary shadow-md flex items-center justify-center ring-2 ring-surface-container-lowest">
+<span class="material-symbols-outlined text-[16px]">directions_bus</span>
+</div>
+<div class="mt-1 px-2 py-0.5 bg-surface-container-lowest/90 rounded-lg shadow text-[10px] font-medium flex items-center gap-1">
+<span class="font-bold text-on-surface">Bus 108</span>
+<span class="text-error font-semibold">+8m Delay</span>
+</div>
+</div>
+<!-- Bus 3: Feeder 88 (On Time) -->
+<div class="absolute bottom-[32%] right-[18%] -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center cursor-pointer">
+<div class="w-8 h-8 rounded-full bg-emerald-600 text-on-primary shadow-md flex items-center justify-center ring-2 ring-surface-container-lowest">
+<span class="material-symbols-outlined text-[16px]">electric_bolt</span>
+</div>
+<div class="mt-1 px-2 py-0.5 bg-surface-container-lowest/90 rounded-lg shadow text-[10px] font-medium flex items-center gap-1">
+<span class="font-bold text-on-surface">Feeder 88</span>
+<span class="text-emerald-700 font-bold">On Time 🟢</span>
+</div>
+</div>
+<!-- Floating Map Controls Dock (Top Right) -->
+<div class="absolute top-4 right-4 z-20 flex flex-col gap-1.5 bg-surface-container-lowest/90 backdrop-blur-md p-1.5 rounded-xl shadow-md">
+<button class="w-8 h-8 rounded-lg hover:bg-surface-container text-on-surface flex items-center justify-center transition-colors" title="Toggle 3D Perspective">
+<span class="material-symbols-outlined text-[18px]">view_in_ar</span>
+</button>
+<button class="w-8 h-8 rounded-lg hover:bg-surface-container text-on-surface flex items-center justify-center transition-colors" title="Vector / Satellite View">
+<span class="material-symbols-outlined text-[18px]">layers</span>
+</button>
+<div class="w-full h-px bg-outline-variant/30 my-0.5"></div>
+<button class="w-8 h-8 rounded-lg hover:bg-surface-container text-on-surface flex items-center justify-center transition-colors" title="Zoom In">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+<button class="w-8 h-8 rounded-lg hover:bg-surface-container text-on-surface flex items-center justify-center transition-colors" title="Zoom Out">
+<span class="material-symbols-outlined text-[18px]">remove</span>
+</button>
+<button class="w-8 h-8 rounded-lg bg-primary-container text-on-primary-container flex items-center justify-center transition-colors shadow-sm" title="Recenter GPS">
+<span class="material-symbols-outlined text-[18px]">filter_center_focus</span>
+</button>
+</div>
+<!-- Map Legend Indicator (Bottom Left) -->
+<div class="absolute bottom-24 left-4 z-20 bg-surface-container-lowest/85 backdrop-blur-md px-3 py-1.5 rounded-xl shadow-sm flex items-center gap-3">
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+<span class="font-label-sm text-[10px] text-on-surface font-semibold">Express 42</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+<span class="font-label-sm text-[10px] text-on-surface">Line 108</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+<span class="font-label-sm text-[10px] text-on-surface">Feeder 88</span>
+</div>
+</div>
+<!-- Floating Bottom HUD Sheet on Map: Live Selected Bus Focus -->
+<div class="absolute bottom-3 inset-x-3 z-30 bg-surface-container-lowest/95 backdrop-blur-xl p-3.5 rounded-2xl shadow-xl flex flex-col sm:flex-row items-center justify-between gap-3">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-12 h-12 rounded-xl bg-primary-container text-on-primary-container flex flex-col items-center justify-center shrink-0 shadow-md">
+<span class="font-headline-sm text-headline-sm font-bold leading-none">42</span>
+<span class="font-label-sm text-[9px] uppercase tracking-wider">EXP</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-label-lg text-label-lg font-bold text-on-surface truncate">Express 42 Selected</span>
+<span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-800 font-label-sm text-[10px] font-bold">2m 40s to Stop</span>
+</div>
+<div class="flex items-center gap-3 text-on-surface-variant font-label-sm text-label-sm mt-0.5">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px] text-primary">speed</span>
+<strong class="text-on-surface">38 km/h</strong>
+</span>
+<span>•</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px] text-emerald-600">event_seat</span>
+<span class="text-emerald-700 font-semibold">24 Seats Open</span>
+</span>
+<span>•</span>
+<span class="truncate">Next: Grand Central Platform 3A</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+<button class="px-3.5 py-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md font-semibold transition-all flex items-center gap-1.5 shadow-sm">
+<span class="material-symbols-outlined text-[16px]">share</span>
+<span>Share ETA</span>
+</button>
+<button class="px-4 py-2 rounded-xl bg-primary text-on-primary font-label-md text-label-md font-bold transition-all shadow-md flex items-center gap-1.5 hover:bg-primary-container">
+<span class="material-symbols-outlined text-[18px]">fmd_good</span>
+<span>Track Live Fleet</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ================= RIGHT COLUMN: Mobility Wallet, INR Passes & AI Crowd Forecaster (3 Cols) ================= -->
+<section class="xl:col-span-3 flex flex-col gap-4">
+<!-- CARD A: Aether Mobility Wallet & Quick Pass Booking -->
+<div class="bg-surface-container-lowest p-space-md rounded-2xl shadow-sm flex flex-col gap-3.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">account_balance_wallet</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Aether Transit Wallet</h2>
+</div>
+<span class="font-label-sm text-[10px] text-emerald-700 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full">Auto-Reload Active</span>
+</div>
+<!-- Dynamic Holographic Pass Card -->
+<div class="relative w-full rounded-2xl p-4 bg-gradient-to-br from-primary via-primary-container to-tertiary text-on-primary shadow-lg overflow-hidden">
+<!-- Geometric wave motifs -->
+<div class="absolute -right-10 -bottom-10 w-40 h-40 bg-surface-container-lowest/10 rounded-full blur-xl pointer-events-none"></div>
+<div class="flex items-start justify-between relative z-10">
+<div>
+<span class="font-label-sm text-[10px] opacity-80 uppercase tracking-widest font-semibold">TransAI SmartPass • INR</span>
+<p class="font-headline-xl text-headline-xl font-bold mt-1 tracking-tight"><span class="wallet-balance-val">₹350.00</span></p>
+</div>
+<div class="p-2 rounded-xl bg-surface-container-lowest/15 backdrop-blur-md">
+<span class="material-symbols-outlined text-on-primary text-[24px]">contactless</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-4 mt-2 relative z-10 border-t border-on-primary/20 text-on-primary/90 font-label-sm text-label-sm">
+<span>Pass Holder: <strong>A. Ramanathan</strong></span>
+<span class="font-mono text-[10px] bg-black/20 px-2 py-0.5 rounded font-semibold tracking-wider">TAP TO RIDE</span>
+</div>
+</div>
+<!-- Quick Top-Up Chips (Instant UPI / RuPay) -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Quick Reload (Instant UPI / RuPay):</span>
+<span class="font-label-sm text-[10px] text-primary cursor-pointer font-semibold">Manage Bank</span>
+</div>
+<div class="grid grid-cols-3 gap-2">
+<button class="topup-chip py-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md font-bold transition-all text-center">
+              + ₹100
+            </button>
+<button class="topup-chip py-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md text-label-md font-bold transition-all text-center">
+              + ₹200
+            </button>
+<button class="topup-chip py-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-label-md text-label-md font-bold transition-all text-center">
+              + ₹500
+            </button>
+</div>
+</div>
+<!-- Quick Pass Catalog in INR -->
+<div class="flex flex-col gap-2 pt-1">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider font-bold">Standard Single &amp; Day Passes</span>
+<!-- Pass 1: Single Metro & Bus Ticket -->
+<div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-low hover:bg-surface-container transition-all">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-bold text-on-surface">Single Metro &amp; Bus</span>
+<span class="font-label-sm text-[11px] text-on-surface-variant">90-min multi-transfer validity</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">₹25.00</span>
+<button class="px-2.5 py-1 rounded-lg bg-primary text-on-primary font-label-sm text-label-sm font-bold shadow-sm hover:bg-primary-container transition-all">
+                Book
+              </button>
+</div>
+</div>
+<!-- Pass 2: 24-Hour City Pass -->
+<div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-low hover:bg-surface-container transition-all">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-bold text-on-surface">24-Hour City Pass</span>
+<span class="font-label-sm text-[11px] text-on-surface-variant">Unlimited citywide lines</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">₹70.00</span>
+<button class="px-2.5 py-1 rounded-lg bg-surface-container-lowest text-on-surface font-label-sm text-label-sm font-bold shadow-sm hover:bg-surface-container transition-all">
+                Buy
+              </button>
+</div>
+</div>
+<!-- Pass 3: 7-Day Commuter -->
+<div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-low hover:bg-surface-container transition-all">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-bold text-on-surface">7-Day Commuter</span>
+<span class="font-label-sm text-[11px] text-on-surface-variant">BMTC Volvo &amp; Namma Metro</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface"><span class="wallet-balance-val">₹350.00</span></span>
+<button class="px-2.5 py-1 rounded-lg bg-surface-container-lowest text-on-surface font-label-sm text-label-sm font-bold shadow-sm hover:bg-surface-container transition-all">
+                Buy
+              </button>
+</div>
+</div>
+</div>
+<!-- NFC & QR Tap-to-Ride Dynamic Barcode Turnstile Token -->
+<div class="mt-1 p-3 rounded-xl bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 bg-surface-container-lowest rounded-xl p-1 flex items-center justify-center shadow-inner relative">
+<!-- Simulated High-Tech QR Pattern -->
+<svg class="w-10 h-10 text-on-surface" fill="currentColor" viewBox="0 0 24 24">
+<path d="M2 2h8v8H2V2zm2 2v4h4V4H4zm10-2h8v8h-8V2zm2 2v4h4V4h-4zM2 14h8v8H2v-8zm2 2v4h4v-4H4zm14 0h4v2h-4v-2zm-4 0h2v4h-2v-4zm4 4h4v2h-4v-2zm-2-2h2v2h-2v-2zm-2 2h2v2h-2v-2z"></path>
+</svg>
+<div class="absolute inset-0 border border-emerald-500 rounded-xl qr-glow pointer-events-none"></div>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm font-bold text-emerald-800 flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                Turnstile Clearance OK
+              </span>
+<span class="font-label-sm text-[10px] text-on-surface-variant font-mono">TOKEN: #BLR-8924-A</span>
+</div>
+</div>
+<button class="p-2 rounded-xl bg-surface-container-lowest text-primary hover:bg-primary-container hover:text-on-primary transition-all shadow-sm" title="Expand Gate Pass">
+<span class="material-symbols-outlined text-[20px]">fullscreen</span>
+</button>
+</div>
+</div>
+<!-- CARD B: AI Sentinel Crowd & Delay Forecaster Bento -->
+<div class="bg-surface-container-lowest p-space-md rounded-2xl shadow-sm flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-[20px]">auto_awesome</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">AI Sentinel Crowd Watch</h2>
+</div>
+<span class="material-symbols-outlined text-outline text-[18px] cursor-pointer" title="AI Model Info">info</span>
+</div>
+<!-- Predictive Line Capacity Monitors -->
+<div class="flex flex-col gap-3 mt-1">
+<!-- Line 1: Express 42 -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="font-label-md text-label-md font-bold text-on-surface">Line 42 Express</span>
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+</div>
+<span class="font-label-sm text-label-sm text-emerald-800 font-semibold">🟢 Low (24% load)</span>
+</div>
+<!-- Progress Bar -->
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-emerald-500 rounded-full" style="width: 24%"></div>
+</div>
+<span class="font-label-sm text-[10px] text-on-surface-variant">38 seats empty • High boarding speed</span>
+</div>
+<!-- Line 2: Line 108 City Loop -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="font-label-md text-label-md font-bold text-on-surface">Line 108 City Loop</span>
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+</div>
+<span class="font-label-sm text-label-sm text-amber-700 font-semibold">🟡 Moderate (62% load)</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-amber-500 rounded-full" style="width: 62%"></div>
+</div>
+<span class="font-label-sm text-[10px] text-on-surface-variant">Seats filling up fast at MG Road stop</span>
+</div>
+<!-- Line 3: Line 88 Feeder -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="font-label-md text-label-md font-bold text-on-surface">Line 88 Feeder</span>
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+</div>
+<span class="font-label-sm text-label-sm text-error font-semibold">🔴 Critical (94% load)</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-error rounded-full" style="width: 94%"></div>
+</div>
+<span class="font-label-sm text-[10px] text-error font-medium">Standing room only • Boarding delays likely</span>
+</div>
+</div>
+<!-- AI Predictive Tactical Advice Card -->
+<div class="mt-2 p-3 rounded-xl bg-tertiary/10 flex items-start gap-2.5">
+<span class="material-symbols-outlined text-tertiary text-[20px] shrink-0 mt-0.5">psychology</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm font-bold text-tertiary">Smart Congestion Avoidance</span>
+<p class="font-body-sm text-[12px] text-on-surface leading-tight mt-0.5">
+              Divert via <strong>Metro Blue line</strong> at Junction 4 to bypass the 9:00 AM Silk Board junction surge. Saves approximately <strong>8 minutes</strong>.
+            </p>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Interactive Client-side Logic Script for Desktop Operations -->
+
+</div></main></div>
+
+
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- 2. MOBILE VIEW (Displayed naturally edge-to-edge on Phones: width < 1024px) -->
+    <!-- ========================================================================= -->
+    <div id="mobileAppContainer" class="mobile-only-view w-full min-h-screen flex flex-col relative bg-surface">
+
+        <!-- Mobile Header (Fixed Edge-to-Edge) -->
+        <header class="fixed top-0 inset-x-0 h-16 z-40 bg-surface/85 backdrop-blur-xl border-b border-surface-container-high px-4 flex items-center justify-between shadow-xs">
+            <div class="flex items-center gap-2.5">
+                <img alt="Where Is My Bus" class="h-8 w-auto object-contain" src="assets/img/logo_wimb.png" onerror="this.src='https://lh3.googleusercontent.com/aida-public/AB6AXuCEZCRgqSKrU5lEE1YQp5StLNfsUh2XAYP_JDHfOP-2qo3v4DSjRTH5R5_2LRnBEyyTAWMk6P91OogeiC3J8Q9r9qEUUf4FWTjUR33My2-04ObGWZvJw1E57uxf_yms1Gtopzgl3kD7JbMknN9bOKt4LC76uPJ_7zyB1gt59SkMASpIIcsVmjuNN05eTgHogKGIdn_6Yo48S0XcoipHAkrRDrUK0oE55z5MFuUop_jmcI618rnXU68kLg'">
+                <div class="flex flex-col">
+                    <div class="flex items-center gap-1.5">
+                        <span class="font-label-sm text-primary uppercase tracking-wider text-[10px] font-bold">TransAI</span>
+                        <span class="inline-flex items-center gap-1 px-1.5 py-0.2 rounded-full bg-surface-container-high text-tertiary font-label-sm text-[9px]">
+                            <span class="w-1.5 h-1.5 rounded-full bg-tertiary-container animate-pulse"></span>Live Sync
+                        </span>
+                    </div>
+                    <span class="font-headline-sm text-headline-sm text-on-surface leading-tight text-sm font-semibold">Where Is My Bus</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <button aria-label="Notifications" class="relative w-9 h-9 flex items-center justify-center rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" onclick="showFeedbackToast('All 418 buses on-time across corridor')">
+                    <span class="material-symbols-outlined text-[22px]">notifications</span>
+                    <span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary-container ring-2 ring-surface"></span>
+                </button>
+                <button class="w-9 h-9 flex items-center justify-center rounded-full cursor-pointer ring-2 ring-primary/20" onclick="switchMobileTab('profile')">
+                    <img alt="Alex Mercer Profile" class="w-8 h-8 rounded-full object-cover" src="assets/img/avatar_profile.png" onerror="this.src='https://lh3.googleusercontent.com/aida-public/AB6AXuDy_muJZDvDqRbnvQbRbN7LuLEFlaifkTBB7eKXbCI4CZBqczbQewsgA_ortobcY4Xmb1PcIqw-F9Q0z1cNFQLpvwBbAhAVfZMUiKdMvYAWGzu6p4kZXBiaRcSeYVHzfgEqxUlICf1NcdwiT2vmNpgRf9i3Sz8M757o3zz80Mt5eifb-IMXSY0MAvG7Mefjw7banipuce5S9o_H2mPcaYMH2plGHuXTQ-Ov4vmYazHL'">
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Mobile Content Panes (Switchable via Bottom Tabs) -->
+        <main class="w-full pt-16 pb-20 flex-1">
+
+            <!-- TAB 1: HOME (Saved Corridors + Animated Mascot Bus) -->
+            <div id="mobileTab_home" class="mobile-tab-pane w-full">
+                <div class="flex flex-col w-full px-margin pb-6 gap-y-4">
+<!-- Top Welcome Card with Animated Bus -->
+<div class="relative overflow-hidden rounded-2xl bg-surface-container-lowest shadow-md p-space-md flex flex-col items-center text-center">
+<div class="w-full relative flex items-center justify-center">
+<!-- STITCH_SVG_START:ANIMATION_26 class="w-full h-44 mx-auto mb-2" --><div class="w-full h-44 mx-auto mb-2" id="animated-svg-ANIMATION_26" style="display:block;"><svg height="100%" viewBox="0 0 400 240" width="100%" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<!-- Sky & Road gradients -->
+<linearGradient id="roadGrad" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#334155"></stop>
+<stop offset="100%" stop-color="#1e293b"></stop>
+</linearGradient>
+<linearGradient id="busBodyGrad" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" stop-color="#3b82f6"></stop>
+<stop offset="50%" stop-color="#2563eb"></stop>
+<stop offset="100%" stop-color="#1d4ed8"></stop>
+</linearGradient>
+<linearGradient id="glassGrad" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#e0f2fe"></stop>
+<stop offset="100%" stop-color="#7dd3fc"></stop>
+</linearGradient>
+<linearGradient id="cloudGrad" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"></stop>
+<stop offset="100%" stop-color="#e2e8f0" stop-opacity="0.6"></stop>
+</linearGradient>
+<filter height="140%" id="softGlow" width="140%" x="-20%" y="-20%">
+<feGaussianBlur result="blur" stdDeviation="3"></feGaussianBlur>
+<feComposite in="SourceGraphic" in2="blur" operator="over"></feComposite>
+</filter>
+</defs>
+<style>
+    @keyframes busBounce {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-4px) rotate(0.6deg); }
+    }
+    @keyframes wheelSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes roadMove {
+      0% { stroke-dashoffset: 0; }
+      100% { stroke-dashoffset: -48; }
+    }
+    @keyframes cloudDrift {
+      0% { transform: translateX(50px); opacity: 0; }
+      20% { opacity: 0.8; }
+      80% { opacity: 0.8; }
+      100% { transform: translateX(-260px); opacity: 0; }
+    }
+    @keyframes cuteBlink {
+      0%, 90%, 100% { transform: scaleY(1); }
+      95% { transform: scaleY(0.1); }
+    }
+    @keyframes exhaustPuff {
+      0% { transform: translate(0, 0) scale(0.4); opacity: 0.8; }
+      100% { transform: translate(-35px, -18px) scale(1.6); opacity: 0; }
+    }
+    @keyframes heartFloat {
+      0% { transform: translate(0, 0) scale(0.6); opacity: 0; }
+      40% { opacity: 1; }
+      100% { transform: translate(12px, -30px) scale(1.1); opacity: 0; }
+    }
+    @keyframes antennaWiggle {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(8deg); }
+      75% { transform: rotate(-8deg); }
+    }
+
+    .bus-wrapper {
+      animation: busBounce 0.5s ease-in-out infinite;
+      transform-origin: 200px 180px;
+    }
+    .wheel-rotate {
+      animation: wheelSpin 0.7s linear infinite;
+    }
+    .road-lines {
+      stroke-dasharray: 24, 24;
+      animation: roadMove 0.4s linear infinite;
+    }
+    .cloud-1 {
+      animation: cloudDrift 9s linear infinite;
+    }
+    .cloud-2 {
+      animation: cloudDrift 14s linear infinite -4s;
+    }
+    .eye-blink {
+      transform-origin: center;
+      animation: cuteBlink 3.8s ease-in-out infinite;
+    }
+    .puff-1 {
+      animation: exhaustPuff 1.2s ease-out infinite;
+      transform-origin: 90px 172px;
+    }
+    .puff-2 {
+      animation: exhaustPuff 1.2s ease-out infinite 0.6s;
+      transform-origin: 90px 172px;
+    }
+    .heart-icon {
+      animation: heartFloat 2.2s ease-in-out infinite;
+      transform-origin: 300px 70px;
+    }
+    .antenna-group {
+      animation: antennaWiggle 1s ease-in-out infinite;
+      transform-origin: 260px 80px;
+    }
+  </style>
+<!-- Background decorative elements -->
+<rect fill="transparent" height="240" width="400" x="0" y="0"></rect>
+<!-- Animated Floating Clouds -->
+<g class="cloud-1">
+<path d="M 330 50 a 14 14 0 0 1 24 -4 a 18 18 0 0 1 30 6 a 12 12 0 0 1 8 20 l -62 0 a 11 11 0 0 1 0 -22 z" fill="url(#cloudGrad)"></path>
+</g>
+<g class="cloud-2">
+<path d="M 360 85 a 10 10 0 0 1 18 -3 a 14 14 0 0 1 22 5 a 10 10 0 0 1 5 15 l -45 0 a 9 9 0 0 1 0 -17 z" fill="url(#cloudGrad)" opacity="0.6"></path>
+</g>
+<!-- Ground Road Surface -->
+<rect fill="url(#roadGrad)" height="42" rx="14" width="370" x="15" y="180"></rect>
+<!-- Road Speed Lines -->
+<line class="road-lines" opacity="0.85" stroke="#38bdf8" stroke-linecap="round" stroke-width="4" x1="25" x2="375" y1="201" y2="201"></line>
+<!-- Mini Green & Red Traffic Signal Markers (Subtle) -->
+<circle cx="35" cy="190" fill="#22c55e" filter="url(#softGlow)" r="3.5"></circle>
+<circle cx="365" cy="190" fill="#ef4444" filter="url(#softGlow)" r="3.5"></circle>
+<!-- Animated Cute Floating Heart / Sparkle above bus -->
+<g class="heart-icon">
+<path d="M 285 70 C 285 64 278 60 273 65 C 268 60 261 64 261 70 C 261 77 273 85 273 85 C 273 85 285 77 285 70 Z" fill="#ef4444" opacity="0.9"></path>
+<circle cx="295" cy="62" fill="#22c55e" r="2.5"></circle>
+</g>
+<!-- Exhaust puffs behind bus -->
+<circle class="puff-1" cx="95" cy="172" fill="#cbd5e1" opacity="0.7" r="6"></circle>
+<circle class="puff-2" cx="95" cy="172" fill="#e2e8f0" opacity="0.7" r="5"></circle>
+<!-- BUS MAIN GROUP (With Bouncing Animation) -->
+<g class="bus-wrapper">
+<!-- Bus Shadow under body -->
+<ellipse cx="205" cy="183" fill="#0f172a" opacity="0.45" rx="95" ry="7"></ellipse>
+<!-- Cute AI Smart Antenna on Roof -->
+<g class="antenna-group">
+<line stroke="#0284c7" stroke-linecap="round" stroke-width="3" x1="245" x2="255" y1="80" y2="58"></line>
+<circle cx="257" cy="56" fill="#22c55e" filter="url(#softGlow)" r="6"></circle>
+<circle cx="257" cy="56" fill="#ffffff" r="3"></circle>
+</g>
+<!-- Bus Main Curved Body (Kawaii proportions: rounded, friendly, chubby) -->
+<rect fill="url(#busBodyGrad)" height="95" rx="30" width="185" x="110" y="80"></rect>
+<!-- White Roof Cap / Top Tier -->
+<path d="M 124 80 L 281 80 A 18 18 0 0 1 295 98 L 295 106 L 110 106 L 110 94 A 14 14 0 0 1 124 80 Z" fill="#f8fafc"></path>
+<!-- Bottom Sill / Green Eco-Friendly Stripe -->
+<rect fill="#22c55e" height="12" rx="4" width="185" x="110" y="152"></rect>
+<!-- Front LED Destination Board -->
+<rect fill="#0f172a" height="15" rx="6" width="52" x="235" y="86"></rect>
+<text fill="#38bdf8" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" letter-spacing="0.5" text-anchor="middle" x="261" y="97">LINE 42</text>
+<!-- Windows (Big kawaii eyes effect) -->
+<!-- Front Panoramic Windshield with Cute Eyes -->
+<rect fill="url(#glassGrad)" height="38" rx="14" stroke="#1e293b" stroke-width="2" width="58" x="230" y="108"></rect>
+<!-- Cute Eyes inside Windshield -->
+<g class="eye-blink">
+<!-- Right Eye (Front facing viewer) -->
+<ellipse cx="264" cy="125" fill="#0f172a" rx="6" ry="8"></ellipse>
+<circle cx="266" cy="122" fill="#ffffff" r="2.8"></circle>
+<circle cx="262" cy="128" fill="#ffffff" r="1.4"></circle>
+<!-- Left Eye -->
+<ellipse cx="244" cy="125" fill="#0f172a" rx="4.5" ry="7"></ellipse>
+<circle cx="245.5" cy="122.5" fill="#ffffff" r="2.2"></circle>
+<!-- Cute Blushing Cheeks (Pink/Red Accent) -->
+<ellipse cx="272" cy="135" fill="#f43f5e" opacity="0.85" rx="5" ry="3"></ellipse>
+<ellipse cx="236" cy="135" fill="#f43f5e" opacity="0.85" rx="4" ry="2.5"></ellipse>
+<!-- Happy Little Smile -->
+<path d="M 251 131 Q 255 136 259 131" fill="none" stroke="#0f172a" stroke-linecap="round" stroke-width="2"></path>
+</g>
+<!-- Side Passenger Windows -->
+<rect fill="url(#glassGrad)" height="36" rx="10" stroke="#1e293b" stroke-width="2" width="46" x="175" y="108"></rect>
+<rect fill="url(#glassGrad)" height="36" rx="10" stroke="#1e293b" stroke-width="2" width="46" x="122" y="108"></rect>
+<!-- Passengers silhouette inside (Cute cat/commuter silhouette) -->
+<circle cx="198" cy="126" fill="#1e3a8a" opacity="0.75" r="6"></circle>
+<path d="M 191 142 A 8 8 0 0 1 205 142 Z" fill="#1e3a8a" opacity="0.75"></path>
+<!-- Cute Front Bumper & Dual Headlights (Vibrant Green & White) -->
+<rect fill="#64748b" height="18" rx="4" width="10" x="290" y="148"></rect>
+<!-- Main Glowing Headlight -->
+<circle cx="294" cy="154" fill="#fef08a" filter="url(#softGlow)" r="5"></circle>
+<circle cx="294" cy="154" fill="#ffffff" r="2.5"></circle>
+<!-- Mini Green Sensor Light -->
+<circle cx="294" cy="162" fill="#22c55e" r="2"></circle>
+<!-- Cute Rear Bumper & Red Taillight -->
+<rect fill="#64748b" height="18" rx="3" width="8" x="105" y="148"></rect>
+<rect fill="#ef4444" filter="url(#softGlow)" height="12" rx="2" width="5" x="104" y="151"></rect>
+<!-- Cute Door Graphic -->
+<rect fill="#1e40af" height="48" opacity="0.5" rx="3" width="10" x="216" y="112"></rect>
+<line stroke="#0f172a" stroke-width="1.5" x1="221" x2="221" y1="112" y2="160"></line>
+<circle cx="218" cy="136" fill="#facc15" r="1.5"></circle>
+<!-- Wheel Wells & Wheels -->
+<!-- Rear Wheel Assembly -->
+<g transform="translate(150, 175)">
+<!-- Wheel Arch cutout -->
+<path d="M -22 -2 A 22 22 0 0 1 22 -2 Z" fill="#0f172a"></path>
+<!-- Wheel Group (Rotates) -->
+<g class="wheel-rotate">
+<!-- Rubber Tire -->
+<circle cx="0" cy="0" fill="#1e293b" r="18" stroke="#0f172a" stroke-width="2"></circle>
+<!-- Shiny Chrome Rim with Red Ring -->
+<circle cx="0" cy="0" fill="#f1f5f9" r="11"></circle>
+<circle cx="0" cy="0" fill="none" r="9" stroke="#ef4444" stroke-width="1.8"></circle>
+<!-- Hubcap details / Lug nuts -->
+<circle cx="0" cy="0" fill="#2563eb" r="4.5"></circle>
+<circle cx="0" cy="-6" fill="#334155" r="1.5"></circle>
+<circle cx="5" cy="3" fill="#334155" r="1.5"></circle>
+<circle cx="-5" cy="3" fill="#334155" r="1.5"></circle>
+</g>
+</g>
+<!-- Front Wheel Assembly -->
+<g transform="translate(262, 175)">
+<!-- Wheel Arch cutout -->
+<path d="M -22 -2 A 22 22 0 0 1 22 -2 Z" fill="#0f172a"></path>
+<!-- Wheel Group (Rotates) -->
+<g class="wheel-rotate">
+<!-- Rubber Tire -->
+<circle cx="0" cy="0" fill="#1e293b" r="18" stroke="#0f172a" stroke-width="2"></circle>
+<!-- Shiny Chrome Rim with Green Ring -->
+<circle cx="0" cy="0" fill="#f1f5f9" r="11"></circle>
+<circle cx="0" cy="0" fill="none" r="9" stroke="#22c55e" stroke-width="1.8"></circle>
+<!-- Hubcap details -->
+<circle cx="0" cy="0" fill="#2563eb" r="4.5"></circle>
+<circle cx="0" cy="-6" fill="#334155" r="1.5"></circle>
+<circle cx="5" cy="3" fill="#334155" r="1.5"></circle>
+<circle cx="-5" cy="3" fill="#334155" r="1.5"></circle>
+</g>
+</g>
+</g>
+</svg></div><!-- STITCH_SVG_END:ANIMATION_26 -->
+<div class="absolute top-2 right-2 flex items-center gap-1.5 bg-primary-fixed text-on-primary-fixed-variant px-2.5 py-1 rounded-full shadow-sm">
+<span class="material-symbols-outlined text-[14px] text-primary" style="font-variation-settings: &quot;FILL&quot; 1;">sync</span>
+<span class="font-label-sm text-label-sm font-semibold uppercase tracking-wider">Live AI Sync</span>
+</div>
+</div>
+<div class="flex flex-col items-center max-w-xs mt-1">
+<h2 class="font-headline-md text-headline-md text-on-surface">Your Daily Commute, Simplified</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+        AI auto-synchronizes your frequent corridors and smart telemetry.
+      </p>
+</div>
+</div>
+<!-- Interactive Filter Tabs -->
+<div class="flex items-center gap-2 overflow-x-auto py-1 -mx-margin px-margin no-scrollbar">
+<button class="tab-btn flex items-center gap-1.5 px-4 py-2 rounded-full bg-primary-container text-on-primary shadow-sm font-label-md text-label-md transition-all" id="tab-all" onclick="selectTab('all')">
+<span>All Saved (5)</span>
+</button>
+<button class="tab-btn flex items-center gap-1.5 px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md transition-all hover:bg-surface-container-high" id="tab-routes" onclick="selectTab('routes')">
+<span>Routes</span>
+</button>
+<button class="tab-btn flex items-center gap-1.5 px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md transition-all hover:bg-surface-container-high" id="tab-stops" onclick="selectTab('stops')">
+<span>Stops &amp; Stations</span>
+</button>
+<button class="tab-btn flex items-center gap-1.5 px-4 py-2 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md transition-all hover:bg-surface-container-high" id="tab-recent" onclick="selectTab('recent')">
+<span>Recent</span>
+</button>
+</div>
+<!-- Saved Route Card 1: Line 42 Express -->
+<div class="route-item rounded-2xl bg-surface-container-lowest p-space-md shadow-md flex flex-col gap-3 transition-transform active:scale-[0.99]">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-center gap-2.5">
+<span class="w-10 h-10 rounded-xl bg-inverse-surface text-inverse-on-surface flex items-center justify-center font-headline-sm text-headline-sm shadow-sm">
+          42
+        </span>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-headline-sm text-on-surface truncate">Line 42 Express</span>
+<span class="inline-flex w-2 h-2 rounded-full bg-tertiary-fixed-dim"></span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Downtown ⇄ Tech Park</span>
+</div>
+</div>
+<button aria-label="Toggle favourite" class="w-9 h-9 rounded-full bg-surface-container-low flex items-center justify-center text-error hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: &quot;FILL&quot; 1;">favorite</span>
+</button>
+</div>
+<!-- Status & Telemetry Strip -->
+<div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+<div class="inline-flex items-center gap-1.5 bg-surface-container-low px-2.5 py-1 rounded-full">
+<span class="w-2 h-2 rounded-full bg-tertiary-container animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-tertiary uppercase">ON TIME (3 min)</span>
+</div>
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-tertiary">airline_seat_recline_normal</span>
+<span class="font-body-sm text-body-sm">38 seats • 24% load</span>
+</div>
+</div>
+<!-- Timeline Progress Bar -->
+<div class="w-full bg-surface-container rounded-full h-1.5 overflow-hidden">
+<div class="bg-tertiary h-full rounded-full w-4/5"></div>
+</div>
+<!-- Actions -->
+<div class="flex items-center justify-between pt-1 gap-2">
+<span class="font-label-sm text-label-sm text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">sensors</span> Telemetry Active
+      </span>
+<button class="flex items-center gap-1.5 bg-tertiary-container text-on-tertiary px-3.5 py-2 rounded-xl font-label-md text-label-md shadow-sm active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[18px]">navigation</span>
+<span>Track Live</span>
+</button>
+</div>
+</div>
+<!-- Saved Route Card 2: Line 108 City Loop -->
+<div class="route-item rounded-2xl bg-surface-container-lowest p-space-md shadow-md flex flex-col gap-3 transition-transform active:scale-[0.99]">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-center gap-2.5">
+<span class="w-10 h-10 rounded-xl bg-inverse-surface text-inverse-on-surface flex items-center justify-center font-headline-sm text-headline-sm shadow-sm">
+          108
+        </span>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-headline-sm text-on-surface truncate">Line 108 City Loop</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Midtown ⇄ Harbor</span>
+</div>
+</div>
+<button aria-label="Toggle favourite" class="w-9 h-9 rounded-full bg-surface-container-low flex items-center justify-center text-error hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: &quot;FILL&quot; 1;">favorite</span>
+</button>
+</div>
+<!-- Congestion & Delay Alert -->
+<div class="flex flex-col gap-2">
+<div class="inline-flex items-center self-start gap-1.5 bg-error-container text-on-error-container px-2.5 py-1 rounded-full">
+<span class="material-symbols-outlined text-[15px] text-error">warning</span>
+<span class="font-label-sm text-label-sm font-semibold uppercase">DELAY ALERT (+9 min roadwork)</span>
+</div>
+<!-- AI Smart Suggestion Chip -->
+<button class="flex items-center justify-between bg-primary-fixed/60 text-on-primary-fixed-variant px-3 py-2 rounded-xl w-full text-left transition-colors hover:bg-primary-fixed">
+<div class="flex items-center gap-2 min-w-0">
+<span class="material-symbols-outlined text-[18px] text-primary">auto_awesome</span>
+<span class="font-label-md text-label-md truncate">Save 6m via Blue Line interchange</span>
+</div>
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">schedule</span> Expected in 14 min
+      </span>
+<button class="flex items-center gap-1 text-primary font-label-md text-label-md py-1.5 px-3 rounded-lg hover:bg-primary-fixed transition-colors">
+<span>View Detour</span>
+<span class="material-symbols-outlined text-[16px]">alt_route</span>
+</button>
+</div>
+</div>
+<!-- Saved Route Card 3: Metro Feeder #88 -->
+<div class="route-item rounded-2xl bg-surface-container-lowest p-space-md shadow-md flex flex-col gap-3 transition-transform active:scale-[0.99]">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-center gap-2.5">
+<span class="w-10 h-10 rounded-xl bg-secondary-container text-on-secondary-container flex items-center justify-center font-headline-sm text-headline-sm shadow-sm">
+          88
+        </span>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface truncate">Metro Feeder #88</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Subway North Gate</span>
+</div>
+</div>
+<button aria-label="Toggle favourite" class="w-9 h-9 rounded-full bg-surface-container-low flex items-center justify-center text-error hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: &quot;FILL&quot; 1;">favorite</span>
+</button>
+</div>
+<div class="grid grid-cols-2 gap-2 pt-1">
+<div class="bg-surface-container-low rounded-xl p-2.5 flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Frequency</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold mt-0.5 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-primary">update</span> Departs 4 min
+        </span>
+</div>
+<div class="bg-surface-container-low rounded-xl p-2.5 flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Crowd Status</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold mt-0.5 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-secondary">groups</span> Mod (48% Cap)
+        </span>
+</div>
+</div>
+</div>
+<!-- Favorite Transit Stops Section -->
+<div class="stops-section flex flex-col gap-3 mt-2">
+<div class="flex items-center justify-between px-1">
+<h3 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[20px]">signpost</span>
+<span>Favorite Transit Stops</span>
+</h3>
+<span class="font-label-sm text-label-sm text-primary uppercase">2 Hubs Near</span>
+</div>
+<!-- Stop 1: Grand Central & 4th Ave -->
+<div class="rounded-2xl bg-surface-container-lowest p-space-md shadow-md flex items-center justify-between gap-3">
+<div class="flex items-start gap-3 min-w-0">
+<div class="w-10 h-10 rounded-xl bg-primary-fixed flex items-center justify-center text-on-primary-fixed shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-[22px]">departure_board</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface truncate">Grand Central &amp; 4th Ave</span>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-body-sm text-body-sm text-on-surface-variant">180m away</span>
+<span class="inline-block w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="font-label-sm text-label-sm bg-surface-container-high px-2 py-0.5 rounded text-on-surface font-semibold">Platform 3A</span>
+</div>
+</div>
+</div>
+<button aria-label="Navigate to Grand Central stop" class="w-10 h-10 rounded-xl bg-primary-container text-on-primary flex items-center justify-center shrink-0 shadow-sm hover:opacity-95 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[20px]">directions_walk</span>
+</button>
+</div>
+<!-- Stop 2: Metro Innovation Plaza -->
+<div class="rounded-2xl bg-surface-container-lowest p-space-md shadow-md flex items-center justify-between gap-3">
+<div class="flex items-start gap-3 min-w-0">
+<div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-on-surface-variant shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-[22px]">directions_subway</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface truncate">Metro Innovation Plaza</span>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-body-sm text-body-sm text-on-surface-variant">420m away</span>
+<span class="inline-block w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="font-label-sm text-label-sm text-tertiary">3 lines connecting</span>
+</div>
+</div>
+</div>
+<button aria-label="Navigate to Innovation Plaza stop" class="w-10 h-10 rounded-xl bg-surface-container-high text-on-surface flex items-center justify-center shrink-0 shadow-sm hover:bg-surface-container-highest active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[20px]">near_me</span>
+</button>
+</div>
+</div>
+<!-- Bottom Quick Action: Add New Favorite Route -->
+<div class="pt-2">
+<button class="w-full flex items-center justify-center gap-2 bg-primary text-on-primary py-3.5 px-4 rounded-xl shadow-md font-label-lg text-label-lg active:scale-[0.98] transition-transform">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+<span>Add New Favorite Route</span>
+</button>
+</div>
+</div>
+
+            </div>
+
+            <!-- TAB 2: EXPLORE (Trip Planner + Suggested Routes) -->
+            <div id="mobileTab_explore" class="mobile-tab-pane w-full hidden">
+                <div class="flex flex-col w-full px-margin space-y-space-md pb-6"><!-- Route Planning Origin & Destination Card --><div class="relative overflow-hidden rounded-2xl bg-surface-container-lowest p-space-md shadow-md"><div class="flex items-center justify-between pb-3 border-b border-surface-container-high"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-[20px]">route</span><h2 class="font-headline-sm text-headline-sm text-on-surface">Trip Planner</h2></div><div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm"><span class="h-2 w-2 rounded-full bg-tertiary animate-pulse"></span><span>Live Radar Active</span></div></div><div class="relative pt-3.5 space-y-3"><div class="absolute left-[19px] top-[28px] bottom-[38px] w-[2px] bg-outline-variant/60 flex flex-col justify-between items-center pointer-events-none"><span class="material-symbols-outlined text-[14px] text-outline my-auto">more_vert</span></div><!-- Origin Field --><div class="flex items-center gap-3 relative"><div class="w-8 h-8 rounded-full bg-tertiary-fixed flex items-center justify-center text-tertiary shrink-0 z-10 ring-4 ring-surface-container-lowest"><span class="material-symbols-outlined text-[16px]">my_location</span></div><div class="flex-1 bg-surface-container-low rounded-xl px-3 py-2.5 flex items-center justify-between border border-transparent focus-within:border-primary transition-all"><div class="min-w-0 flex-1"><span class="font-label-sm text-[10px] uppercase text-tertiary font-bold tracking-wider block">Pick-up Location</span><input class="w-full bg-transparent font-label-md text-label-md text-on-surface font-semibold focus:outline-none truncate" type="text" value="Current Location (Grand Central Terminal)"></div><span class="material-symbols-outlined text-tertiary text-[18px]">check_circle</span></div><button aria-label="Swap Origin and Destination" class="w-8 h-8 rounded-full bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface-variant transition-colors shadow-sm shrink-0 active:scale-95"><span class="material-symbols-outlined text-[18px]">swap_vert</span></button></div><!-- Destination Field --><div class="flex items-center gap-3 relative"><div class="w-8 h-8 rounded-full bg-error-container flex items-center justify-center text-error shrink-0 z-10 ring-4 ring-surface-container-lowest"><span class="material-symbols-outlined text-[16px]">location_on</span></div><div class="flex-1 bg-surface-container-low rounded-xl px-3 py-2.5 flex items-center justify-between border border-transparent focus-within:border-primary transition-all"><div class="min-w-0 flex-1"><span class="font-label-sm text-[10px] uppercase text-error font-bold tracking-wider block">Drop-off Destination</span><input class="w-full bg-transparent font-label-md text-label-md text-on-surface font-semibold focus:outline-none truncate" type="text" value="Tech Park Innovation Hub, Bldg 4"></div><button class="text-on-surface-variant hover:text-on-surface"><span class="material-symbols-outlined text-[18px]">search</span></button></div><div class="w-8 shrink-0"></div></div></div><!-- Fast-Access Favorite Pills --><div class="flex items-center gap-2 overflow-x-auto no-scrollbar pt-2"><button class="px-2.5 py-1 rounded-lg bg-surface-container text-on-surface font-label-sm text-label-sm flex items-center gap-1.5 shrink-0 hover:bg-surface-container-high transition-colors"><span>💼</span><span>Work</span></button><button class="px-2.5 py-1 rounded-lg bg-surface-container text-on-surface font-label-sm text-label-sm flex items-center gap-1.5 shrink-0 hover:bg-surface-container-high transition-colors"><span>🏠</span><span>Home</span></button><button class="px-2.5 py-1 rounded-lg bg-surface-container text-on-surface font-label-sm text-label-sm flex items-center gap-1.5 shrink-0 hover:bg-surface-container-high transition-colors"><span>✈️</span><span>Airport (SFO)</span></button><button class="px-2.5 py-1 rounded-lg bg-surface-container text-on-surface font-label-sm text-label-sm flex items-center gap-1.5 shrink-0 hover:bg-surface-container-high transition-colors"><span>🏥</span><span>City Hospital</span></button></div><!-- Time Selector Row --><div class="mt-3 pt-2.5 border-t border-surface-container-high flex items-center justify-between"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-[18px]">schedule</span><span class="font-label-md text-label-md text-on-surface font-medium">Departure Timing:</span></div><div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface font-label-md text-label-md"><span class="h-1.5 w-1.5 rounded-full bg-tertiary"></span><span class="font-semibold">Leave Now (8:32 AM)</span><span class="material-symbols-outlined text-[16px]">expand_more</span></div></div></div><!-- Route Filter Preferences --><div class="w-full overflow-x-auto no-scrollbar py-0.5 -mx-margin px-margin"><div class="flex items-center gap-2 min-w-max"><button class="px-3.5 py-1.5 rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md shadow-sm flex items-center gap-1.5 active:scale-95 transition-transform"><span>⚡</span><span>Fastest Route</span></button><button class="px-3.5 py-1.5 rounded-full bg-surface-container-lowest text-on-surface font-label-md text-label-md shadow-sm flex items-center gap-1.5 active:scale-95 transition-transform"><span>🌿</span><span>Zero Transfers</span></button><button class="px-3.5 py-1.5 rounded-full bg-surface-container-lowest text-on-surface font-label-md text-label-md shadow-sm flex items-center gap-1.5 active:scale-95 transition-transform"><span>💺</span><span>High Seating</span></button><button class="px-3.5 py-1.5 rounded-full bg-surface-container-lowest text-on-surface font-label-md text-label-md shadow-sm flex items-center gap-1.5 active:scale-95 transition-transform"><span>♿</span><span>Accessible</span></button><button class="px-3.5 py-1.5 rounded-full bg-surface-container-lowest text-on-surface font-label-md text-label-md shadow-sm flex items-center gap-1.5 active:scale-95 transition-transform"><span>🟢</span><span>Green Fleet</span></button></div></div><!-- Interactive Mini Route Map / Corridor Preview --><div class="relative overflow-hidden rounded-2xl bg-surface-container-lowest p-space-md shadow-md border border-surface-container-high"><div class="flex items-center justify-between mb-3"><div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-primary text-[18px]">map</span><span class="font-label-lg text-label-lg text-on-surface">Transit Corridor Preview</span></div><div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm"><span class="h-1.5 w-1.5 rounded-full bg-tertiary animate-ping"></span><span>Traffic Clear • Bus 42 on schedule</span></div></div><!-- Schematic Route Vector Visual --><div class="relative h-24 bg-surface-container-low rounded-xl p-3 flex items-center justify-between overflow-hidden"><div class="absolute inset-0 opacity-15 pointer-events-none"><div class="w-full h-full" style="background-image: radial-gradient(#004ac6 1px, transparent 1px); background-size: 16px 16px;"></div></div><!-- Corridor Start --><div class="relative z-10 flex flex-col items-center"><div class="w-7 h-7 rounded-full bg-tertiary text-on-tertiary flex items-center justify-center shadow-sm ring-2 ring-surface"><span class="material-symbols-outlined text-[14px]">person_pin_circle</span></div><span class="font-label-sm text-[11px] font-bold text-on-surface mt-1">Grand Central</span><span class="font-body-sm text-[10px] text-tertiary font-semibold">Bay 3A</span></div><!-- Animated Route Track with Waypoint --><div class="relative flex-1 mx-3 flex items-center justify-center"><div class="w-full h-1 bg-outline-variant rounded-full relative overflow-hidden"><div class="absolute left-0 top-0 bottom-0 bg-primary w-2/3"></div></div><div class="absolute left-1/2 -translate-x-1/2 -top-3.5 flex flex-col items-center"><div class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-md animate-bounce ring-2 ring-surface"><span class="material-symbols-outlined text-[16px]">directions_bus</span></div><span class="px-1.5 py-0.2 rounded-full bg-primary text-on-primary font-label-sm text-[9px] font-bold -mt-0.5">42 EXP</span></div></div><!-- Corridor End --><div class="relative z-10 flex flex-col items-center"><div class="w-7 h-7 rounded-full bg-error text-on-error flex items-center justify-center shadow-sm ring-2 ring-surface"><span class="material-symbols-outlined text-[14px]">flag</span></div><span class="font-label-sm text-[11px] font-bold text-on-surface mt-1">Tech Park</span><span class="font-body-sm text-[10px] text-on-surface-variant">Bldg 4</span></div></div></div><!-- Recommended Routes Section --><div class="space-y-space-md"><div class="flex items-center justify-between px-1"><h3 class="font-headline-sm text-headline-sm text-on-surface">Suggested Routes</h3><span class="font-label-sm text-label-sm text-on-surface-variant font-medium">3 options sorted by ETA</span></div><!-- Route Card 1: Best & Fastest (Featured) --><div class="relative overflow-hidden rounded-2xl bg-surface-container-lowest p-space-md shadow-md border-2 border-primary/20"><div class="absolute left-0 top-0 bottom-0 w-1.5 bg-primary"></div><div class="pl-2 space-y-3"><div class="flex items-start justify-between"><div class="flex items-center gap-2"><span class="px-2.5 py-1 rounded-lg bg-primary text-on-primary font-label-md text-label-md font-bold tracking-wide flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">directions_bus</span> Line 42 Express</span><span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-semibold"><span class="h-1.5 w-1.5 rounded-full bg-tertiary animate-pulse"></span> Best Pick</span></div><div class="text-right"><span class="font-headline-sm text-headline-sm text-primary font-bold block">18 min</span><span class="font-body-sm text-body-sm text-on-surface-variant">Arrives 8:50 AM</span></div></div><div class="space-y-1"><p class="font-headline-sm text-headline-sm text-on-surface">Departs in 3m from Bay 3A</p><p class="font-body-md text-body-md text-on-surface-variant">Direct rapid transit with automated smart signals priority.</p></div><!-- Capacity & Comfort Pills --><div class="grid grid-cols-2 gap-2"><div class="flex items-center gap-2 p-2 rounded-xl bg-surface-container-low"><span class="material-symbols-outlined text-tertiary text-[18px]">event_seat</span><div class="min-w-0"><span class="font-label-sm text-[10px] text-on-surface-variant uppercase block">Availability</span><span class="font-label-md text-label-md text-tertiary font-semibold truncate block">38 Seats (24% load)</span></div></div><div class="flex items-center gap-2 p-2 rounded-xl bg-surface-container-low"><span class="material-symbols-outlined text-primary text-[18px]">schedule</span><div class="min-w-0"><span class="font-label-sm text-[10px] text-on-surface-variant uppercase block">Frequency</span><span class="font-label-md text-label-md text-on-surface font-semibold truncate block">Every 6 mins</span></div></div></div><!-- Itinerary Step Segments --><div class="p-2.5 rounded-xl bg-surface-container-low flex items-center justify-between text-on-surface font-label-sm text-label-sm"><div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px] text-on-surface-variant">directions_walk</span><span>Walk 2m</span></div><span class="material-symbols-outlined text-[14px] text-outline">chevron_right</span><div class="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-surface-container-highest font-semibold text-primary"><span class="material-symbols-outlined text-[16px]">directions_bus</span><span>Line 42 (14m)</span></div><span class="material-symbols-outlined text-[14px] text-outline">chevron_right</span><div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px] text-on-surface-variant">directions_walk</span><span>Walk 2m</span></div></div><!-- Action Buttons --><div class="flex items-center gap-2 pt-1"><button class="flex-1 py-2.5 px-4 rounded-xl bg-primary text-on-primary font-label-lg text-label-lg flex items-center justify-center gap-2 shadow-sm active:scale-98 transition-transform"><span class="material-symbols-outlined text-[18px]">navigation</span><span>Start Journey Navigation</span></button><button aria-label="Bookmark Route" class="py-2.5 px-3.5 rounded-xl bg-surface-container-high text-on-surface-variant font-label-md text-label-md hover:bg-surface-variant transition-colors flex items-center justify-center"><span class="material-symbols-outlined text-[20px]">bookmark_border</span></button></div></div></div><!-- Route Card 2: Low Crowd / Scenic --><div class="relative overflow-hidden rounded-2xl bg-surface-container-lowest p-space-md shadow-md"><div class="absolute left-0 top-0 bottom-0 w-1.5 bg-tertiary"></div><div class="pl-2 space-y-3"><div class="flex items-start justify-between"><div class="flex items-center gap-2"><span class="px-2.5 py-1 rounded-lg bg-tertiary-container text-on-tertiary-container font-label-md text-label-md font-bold tracking-wide flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">directions_bus</span> Line 108 City Loop</span><span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm">High Comfort</span></div><div class="text-right"><span class="font-headline-sm text-headline-sm text-on-surface font-bold block">24 min</span><span class="font-body-sm text-body-sm text-on-surface-variant">Arrives 8:56 AM</span></div></div><div class="space-y-1"><p class="font-headline-sm text-headline-sm text-on-surface">Departs in 6m from Bay 1B</p><p class="font-body-md text-body-md text-on-surface-variant">Spacious scenic corridor with guaranteed seating and ultra-smooth ride.</p></div><!-- Capacity Pill --><div class="p-2.5 rounded-xl bg-surface-container-low flex items-center justify-between text-on-surface font-label-sm text-label-sm"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-tertiary text-[18px]">airline_seat_recline_extra</span><span class="font-label-md text-label-md text-tertiary font-semibold">Plenty of Seating (18% load)</span></div><div class="flex items-center gap-1.5 font-label-sm text-label-sm text-on-surface-variant"><span>Walk 4m</span><span>→</span><span class="font-semibold text-on-surface">Line 108 (18m)</span><span>→</span><span>Walk 2m</span></div></div><!-- Action Button --><div class="pt-1"><button class="w-full py-2.5 px-4 rounded-xl bg-surface-container-high hover:bg-surface-variant text-on-surface font-label-lg text-label-lg flex items-center justify-center gap-1.5 transition-colors"><span>Select This Route</span><span class="material-symbols-outlined text-[18px]">arrow_forward</span></button></div></div></div><!-- Route Card 3: Alternative with Delay Caution --><div class="relative overflow-hidden rounded-2xl bg-surface-container-lowest p-space-md shadow-md"><div class="absolute left-0 top-0 bottom-0 w-1.5 bg-error"></div><div class="pl-2 space-y-3"><div class="flex items-start justify-between"><div class="flex items-center gap-2"><span class="px-2.5 py-1 rounded-lg bg-surface-container-high text-on-surface font-label-md text-label-md font-bold tracking-wide flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">directions_bus</span> Line 15X + Metro</span><span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-semibold"><span class="material-symbols-outlined text-[12px]">warning</span> Caution</span></div><div class="text-right"><span class="font-headline-sm text-headline-sm text-error font-bold block">28 min</span><span class="font-body-sm text-body-sm text-error font-medium">+8m Delay</span></div></div><div class="space-y-1"><p class="font-headline-sm text-headline-sm text-on-surface">Bridge Roadwork Near South Pier</p><p class="font-body-md text-body-md text-on-surface-variant">Congestion at River Bridge may cause intermittent holding. Express 42 detour suggested.</p></div><div class="flex items-center gap-2 pt-1"><button class="flex-1 py-2 px-3 rounded-xl bg-surface-container-low hover:bg-surface-container-high text-on-surface font-label-md text-label-md flex items-center justify-center gap-1 transition-colors"><span class="material-symbols-outlined text-[16px]">alt_route</span><span>View Delay Details</span></button></div></div></div></div></div>
+
+            </div>
+
+            <!-- TAB 3: LIVE TRACK (Interactive Vector Radar Map + Draggable Bottom Sheet) -->
+            <div id="mobileTab_live-tracking" class="mobile-tab-pane w-full hidden">
+                <div class="flex flex-col w-full relative">
+<!-- Interactive Floating HUD Container -->
+<div class="px-margin pt-space-xs pb-space-sm flex flex-col gap-space-sm z-30">
+<!-- Search Bar HUD -->
+<div class="w-full bg-surface-container-lowest/90 backdrop-blur-md rounded-full shadow-md flex items-center px-4 py-2.5 gap-3 transition-all duration-300">
+<span class="material-symbols-outlined text-primary text-[22px]">search</span>
+<input class="w-full bg-transparent text-on-surface font-body-md text-body-md placeholder:text-on-surface-variant focus:outline-none truncate" placeholder="Search bus line, stop or destination..." type="text">
+<button aria-label="Use Current GPS" class="w-8 h-8 rounded-full bg-primary-fixed/60 hover:bg-primary-fixed flex items-center justify-center text-primary transition-transform active:scale-95 shrink-0" onclick="triggerGpsPulse()">
+<span class="material-symbols-outlined text-[18px]">my_location</span>
+</button>
+</div>
+<!-- Quick Filter Chips Horizontal Scroller -->
+<div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5" id="filterChips">
+<button class="filter-chip shrink-0 px-3.5 py-1.5 rounded-full bg-primary-container text-on-primary font-label-md text-label-md flex items-center gap-1.5 shadow-sm active:scale-95 transition-all" onclick="selectFilter(this, 'all')">
+<span class="material-symbols-outlined text-[15px]">directions_bus</span>
+<span>All Buses (8 in range)</span>
+</button>
+<button class="filter-chip shrink-0 px-3.5 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-md text-label-md flex items-center gap-1.5 shadow-sm hover:bg-surface-container transition-all" onclick="selectFilter(this, 'ontime')">
+<span class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_#22c55e]"></span>
+<span>On-Time Only</span>
+</button>
+<button class="filter-chip shrink-0 px-3.5 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-md text-label-md flex items-center gap-1.5 shadow-sm hover:bg-surface-container transition-all" onclick="selectFilter(this, 'delays')">
+<span class="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_#ef4444]"></span>
+<span>Delays</span>
+</button>
+<button class="filter-chip shrink-0 px-3.5 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-md text-label-md flex items-center gap-1.5 shadow-sm hover:bg-surface-container transition-all" onclick="selectFilter(this, 'express')">
+<span class="material-symbols-outlined text-[15px] text-tertiary">bolt</span>
+<span>Express Only</span>
+</button>
+</div>
+</div>
+<!-- Interactive Map Viewport -->
+<div class="relative w-full h-[410px] overflow-hidden select-none bg-surface-container-low">
+<!-- Dynamic SVG Urban Cartography Canvas -->
+<svg class="absolute inset-0 w-full h-full object-cover" fill="none" viewBox="0 0 420 440" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<!-- Waterway Soft Gradient -->
+<linearGradient gradientUnits="userSpaceOnUse" id="riverGrad" x1="0" x2="420" y1="0" y2="440">
+<stop offset="0%" stop-color="#cbdbf5" stop-opacity="0.85"></stop>
+<stop offset="100%" stop-color="#b4c5ff" stop-opacity="0.9"></stop>
+</linearGradient>
+<!-- Route 42 Glow Effect -->
+<filter height="130%" id="glowBlue" width="130%" x="-10%" y="-10%">
+<feDropShadow dx="0" dy="2" flood-color="#2563eb" flood-opacity="0.35" stdDeviation="3"></feDropShadow>
+</filter>
+<!-- User Radar Sweep Gradient -->
+<radialGradient cx="50%" cy="50%" id="radarSweep" r="50%">
+<stop offset="0%" stop-color="#2563eb" stop-opacity="0.45"></stop>
+<stop offset="70%" stop-color="#2563eb" stop-opacity="0.12"></stop>
+<stop offset="100%" stop-color="#2563eb" stop-opacity="0"></stop>
+</radialGradient>
+</defs>
+<!-- Urban Building Footprints -->
+<g opacity="0.3">
+<rect fill="#dce9ff" height="60" rx="4" width="52" x="24" y="28"></rect>
+<rect fill="#dce9ff" height="42" rx="4" width="70" x="86" y="24"></rect>
+<rect fill="#dce9ff" height="74" rx="4" width="58" x="24" y="104"></rect>
+<rect fill="#dce9ff" height="64" rx="6" width="105" x="290" y="30"></rect>
+<rect fill="#dce9ff" height="88" rx="6" width="80" x="312" y="112"></rect>
+<rect fill="#dce9ff" height="68" rx="6" width="74" x="40" y="270"></rect>
+<rect fill="#dce9ff" height="60" rx="6" width="84" x="300" y="250"></rect>
+</g>
+<!-- Central River Canal -->
+<path d="M-20,195 C70,185 140,240 230,225 C310,210 370,165 440,160 L440,212 C370,218 310,258 230,270 C140,285 70,230 -20,242 Z" fill="url(#riverGrad)"></path>
+<!-- City Parks / Recreational Greenery -->
+<path d="M 180,30 Q 235,22 254,75 Q 240,125 190,118 Q 165,85 180,30 Z" fill="#d1fae5" opacity="0.85"></path>
+<path d="M 160,320 Q 220,310 240,365 Q 185,410 140,375 Q 130,340 160,320 Z" fill="#d1fae5" opacity="0.8"></path>
+<!-- Secondary Street Grid -->
+<g opacity="0.9" stroke="#ffffff" stroke-linecap="round" stroke-width="3.5">
+<line x1="-10" x2="430" y1="78" y2="78"></line>
+<line x1="-10" x2="430" y1="150" y2="150"></line>
+<line x1="-10" x2="430" y1="310" y2="310"></line>
+<line x1="-10" x2="430" y1="390" y2="390"></line>
+<line x1="84" x2="84" y1="-10" y2="450"></line>
+<line x1="172" x2="172" y1="-10" y2="450"></line>
+<line x1="285" x2="285" y1="-10" y2="450"></line>
+<line x1="375" x2="375" y1="-10" y2="450"></line>
+</g>
+<!-- Major Arterial Boulevard Bridges -->
+<line stroke="#ffffff" stroke-linecap="square" stroke-width="8" x1="172" x2="172" y1="190" y2="275"></line>
+<line stroke="#ffffff" stroke-linecap="square" stroke-width="8" x1="285" x2="285" y1="180" y2="265"></line>
+<!-- TRANSIT LINE: Orange 108 Local Path -->
+<path d="M 28,390 L 84,390 L 84,150 L 172,150 L 285,150 L 285,78 L 410,78" fill="none" id="pathLine108" stroke="#f97316" stroke-dasharray="7 3" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.85" stroke-width="4.5"></path>
+<!-- TRANSIT LINE: Cyan Feeder 88 Path -->
+<path d="M 84,78 L 172,78 L 172,310 L 285,310" fill="none" id="pathLine88" stroke="#00788c" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.85" stroke-width="4"></path>
+<!-- TRANSIT LINE: Blue Line 42 Express Path -->
+<path d="M 12,78 L 84,78 L 172,78 L 172,230 L 285,230 L 285,390 L 415,390" fill="none" filter="url(#glowBlue)" id="pathLine42" stroke="#2563eb" stroke-linecap="round" stroke-linejoin="round" stroke-width="6"></path>
+<!-- Transit Stations Along Route 42 -->
+<circle cx="84" cy="78" fill="#ffffff" r="4.5" stroke="#2563eb" stroke-width="2.5"></circle>
+<circle cx="172" cy="150" fill="#2563eb" r="5" stroke="#ffffff" stroke-width="2"></circle>
+<circle cx="285" cy="230" fill="#ffffff" r="4.5" stroke="#2563eb" stroke-width="2.5"></circle>
+<circle cx="285" cy="390" fill="#ffffff" r="4.5" stroke="#2563eb" stroke-width="2.5"></circle>
+<!-- Stop Name Pills On Map -->
+<g>
+<rect fill="#0b1c30" fill-opacity="0.78" height="18" rx="4" width="88" x="180" y="140"></rect>
+<text fill="#ffffff" font-family="Inter" font-size="9" font-weight="600" x="186" y="153">Grand Central</text>
+</g>
+<!-- User Real-Time Position Dot with Directional Radar Cone -->
+<g id="userGpsMarker" transform="translate(196, 175)">
+<!-- Rotating Radar Beam -->
+<path d="M 0,0 L -24,-52 A 56,56 0 0,1 24,-52 Z" fill="url(#radarSweep)">
+<animateTransform attributeName="transform" dur="4.2s" from="0" repeatCount="indefinite" to="360" type="rotate"></animateTransform>
+</path>
+<!-- Concentric Distance Wave -->
+<circle cx="0" cy="0" fill="none" opacity="0.6" r="14" stroke="#2563eb" stroke-width="1.5">
+<animate attributeName="r" dur="2s" repeatCount="indefinite" values="8;24"></animate>
+<animate attributeName="opacity" dur="2s" repeatCount="indefinite" values="0.7;0"></animate>
+</circle>
+<!-- Core Blue Beacon -->
+<circle class="shadow-md" cx="0" cy="0" fill="#2563eb" r="7" stroke="#ffffff" stroke-width="2.5"></circle>
+<circle cx="0" cy="0" fill="#ffffff" r="2.5"></circle>
+</g>
+<!-- LIVE BUS MARKER: Bus 108 (Delay / Congestion) -->
+<g id="busMarker108" transform="translate(130, 150)">
+<circle cx="0" cy="0" fill="#fee2e2" r="14"></circle>
+<circle cx="0" cy="0" fill="#ef4444" r="9" stroke="#ffffff" stroke-width="2"></circle>
+<polygon fill="#ffffff" points="-3,-2 3,-2 0,4"></polygon>
+<!-- Delay Badge -->
+<rect fill="#ef4444" height="16" rx="4" width="60" x="10" y="-18"></rect>
+<text fill="#ffffff" font-family="Inter" font-size="8.5" font-weight="700" x="14" y="-7">108 • +8m</text>
+</g>
+<!-- LIVE BUS MARKER: Feeder 88 (Cyan On Track) -->
+<g id="busMarker88" transform="translate(172, 260)">
+<circle cx="0" cy="0" fill="#00788c" r="9" stroke="#ffffff" stroke-width="2"></circle>
+<polygon fill="#ffffff" points="-3,-2 3,-2 0,4" transform="rotate(180)"></polygon>
+<!-- Tag -->
+<rect fill="#00788c" height="15" rx="3" width="38" x="-42" y="-18"></rect>
+<text fill="#ffffff" font-family="Inter" font-size="8.5" font-weight="600" x="-38" y="-7">F-88</text>
+</g>
+<!-- ACTIVE TARGET: Bus 42 Express (Approaching User / Rapid Tracking) -->
+<g class="cursor-pointer" id="busMarker42" transform="translate(172, 118)">
+<!-- Live Velocity Ripple -->
+<circle cx="0" cy="0" fill="none" r="18" stroke="#22c55e" stroke-width="2">
+<animate attributeName="r" dur="1.6s" repeatCount="indefinite" values="10;22"></animate>
+<animate attributeName="opacity" dur="1.6s" repeatCount="indefinite" values="0.8;0"></animate>
+</circle>
+<!-- Marker Housing -->
+<circle class="shadow-lg" cx="0" cy="0" fill="#22c55e" r="12" stroke="#ffffff" stroke-width="2.5"></circle>
+<path d="M-4,-4 L4,-4 L4,2 L-4,2 Z M-3,2 L-3,4 M3,2 L3,4" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-width="1.4"></path>
+<!-- Floating Telemetry Indicator -->
+<g transform="translate(16, -18)">
+<rect fill="#0b1c30" fill-opacity="0.92" filter="url(#glowBlue)" height="20" rx="5" width="86" x="0" y="0"></rect>
+<circle cx="8" cy="10" fill="#22c55e" r="3"></circle>
+<text fill="#ffffff" font-family="Inter" font-size="9.5" font-weight="700" x="16" y="13.5">42 Exp • 38 km/h</text>
+</g>
+</g>
+</svg>
+<!-- Floating Map Control Dock (Right Edge) -->
+<div class="absolute right-4 top-4 flex flex-col gap-2.5 z-20">
+<button aria-label="Toggle Traffic &amp; 3D Layers" class="w-11 h-11 rounded-full bg-surface-container-lowest/95 backdrop-blur-md shadow-md text-on-surface flex items-center justify-center hover:bg-surface-container transition-transform active:scale-95" onclick="toggleMapLayer(this)">
+<span class="material-symbols-outlined text-[20px]">layers</span>
+</button>
+<button aria-label="Recenter on current bus" class="w-11 h-11 rounded-full bg-surface-container-lowest/95 backdrop-blur-md shadow-md text-primary flex items-center justify-center hover:bg-surface-container transition-transform active:scale-95" onclick="recenterMap()">
+<span class="material-symbols-outlined text-[20px]">near_me</span>
+</button>
+<div class="flex flex-col rounded-full bg-surface-container-lowest/95 backdrop-blur-md shadow-md overflow-hidden">
+<button aria-label="Zoom in" class="w-11 h-10 text-on-surface flex items-center justify-center hover:bg-surface-container transition-colors active:scale-95" onclick="zoomMap(1)">
+<span class="material-symbols-outlined text-[19px]">add</span>
+</button>
+<div class="w-6 h-[1px] bg-outline-variant/30 self-center"></div>
+<button aria-label="Zoom out" class="w-11 h-10 text-on-surface flex items-center justify-center hover:bg-surface-container transition-colors active:scale-95" onclick="zoomMap(-1)">
+<span class="material-symbols-outlined text-[19px]">remove</span>
+</button>
+</div>
+</div>
+<!-- Active Speed HUD Overlay (Bottom Left Map Floor) -->
+<div class="absolute left-4 bottom-5 z-20 flex items-center gap-2 bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1.5 rounded-full shadow-sm">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-on-surface tracking-wider uppercase">Live Telemetry Feed</span>
+</div>
+</div>
+<!-- Draggable Bottom Sheet: Transit Telemetry Card -->
+<section class="relative w-full -mt-3 bg-surface-container-lowest rounded-t-3xl shadow-[0_-8px_30px_rgba(11,28,48,0.08)] px-margin pt-3 pb-space-lg flex flex-col gap-space-md z-30">
+<!-- Grab Bar Indicator -->
+<div class="w-10 h-1 rounded-full bg-outline-variant/60 mx-auto cursor-grab active:cursor-grabbing"></div>
+<!-- Selected Bus Header & Live ETA Status -->
+<div class="flex items-start justify-between gap-3">
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-0.5 rounded-md bg-on-secondary-fixed text-on-primary font-headline-sm text-headline-sm tracking-tight">42</span>
+<span class="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight">Line 42 Express</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+          Bound for Tech Park Innovation Hub
+        </span>
+</div>
+<!-- Live ETA Badge -->
+<div class="flex flex-col items-end shrink-0">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 font-label-sm text-label-sm uppercase tracking-wider">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
+          On Schedule
+        </span>
+<span class="font-headline-md text-headline-md text-primary font-bold mt-0.5">2m 40s</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Platform 3A</span>
+</div>
+</div>
+<!-- Real-Time Bus Telemetry Bento Row -->
+<div class="grid grid-cols-3 gap-2.5">
+<!-- Speed Metric -->
+<div class="p-2.5 rounded-2xl bg-surface-container flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm">Velocity</span>
+<span class="material-symbols-outlined text-[16px] text-primary">speed</span>
+</div>
+<div class="mt-1">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">38</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">km/h</span>
+</div>
+</div>
+<!-- Capacity & Crowding Metric -->
+<div class="p-2.5 rounded-2xl bg-surface-container flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm">Occupancy</span>
+<span class="material-symbols-outlined text-[16px] text-emerald-600">airline_seat_recline_normal</span>
+</div>
+<div class="mt-1">
+<span class="font-headline-sm text-headline-sm text-emerald-700 font-bold">24 Open</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant block">Low Crowd</span>
+</div>
+</div>
+<!-- Next Terminal / Intermodal -->
+<div class="p-2.5 rounded-2xl bg-surface-container flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm">Next Stop</span>
+<span class="material-symbols-outlined text-[16px] text-tertiary">transfer_within_a_station</span>
+</div>
+<div class="mt-1 truncate">
+<span class="font-label-md text-label-md text-on-surface truncate block font-bold">Grand Central</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Line 108 Link</span>
+</div>
+</div>
+</div>
+<!-- 3-Step Live Stop Progress Timeline -->
+<div class="bg-surface-container-low rounded-2xl p-3.5 flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Route Progress Vector</span>
+<span class="font-label-sm text-label-sm text-primary font-semibold">1 Stop Away</span>
+</div>
+<div class="relative flex items-center justify-between mt-2 px-2">
+<!-- Connecting Progress Bar -->
+<div class="absolute left-6 right-6 top-3 h-1 bg-surface-container-highest rounded-full -z-0">
+<div class="w-1/3 h-full bg-primary-container rounded-full"></div>
+</div>
+<!-- Stop 1: Current / Boarding -->
+<div class="flex flex-col items-center gap-1.5 z-10">
+<div class="w-6 h-6 rounded-full bg-primary-container text-on-primary flex items-center justify-center ring-4 ring-surface-container-lowest shadow-sm">
+<span class="material-symbols-outlined text-[14px]">directions_bus</span>
+</div>
+<div class="flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface font-semibold">Grand Central</span>
+<span class="font-label-sm text-label-sm text-emerald-600 font-bold">Boarding</span>
+</div>
+</div>
+<!-- Stop 2: Intermediate Transfer -->
+<div class="flex flex-col items-center gap-1.5 z-10">
+<div class="w-5 h-5 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center ring-4 ring-surface-container-lowest">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+</div>
+<div class="flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface font-semibold">Financial Plaza</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">4 min</span>
+</div>
+</div>
+<!-- Stop 3: Final Destination -->
+<div class="flex flex-col items-center gap-1.5 z-10">
+<div class="w-5 h-5 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center ring-4 ring-surface-container-lowest">
+<span class="material-symbols-outlined text-[12px] text-tertiary">flag</span>
+</div>
+<div class="flex flex-col items-center text-center">
+<span class="font-label-sm text-label-sm text-on-surface font-semibold">Tech Park</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">18 min</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Primary & Secondary Commuter Action Buttons -->
+<div class="flex items-center gap-3 pt-1">
+<button class="flex-1 py-3 px-4 rounded-xl bg-primary-container text-on-primary font-label-lg text-label-lg flex items-center justify-center gap-2 shadow-md hover:opacity-95 active:scale-[0.98] transition-all" onclick="trackJourney(this)">
+<span class="material-symbols-outlined text-[20px]">navigation</span>
+<span>Track Full Journey</span>
+</button>
+<button aria-label="Share live ETA" class="py-3 px-4 rounded-xl bg-surface-container text-on-surface font-label-lg text-label-lg flex items-center justify-center gap-1.5 hover:bg-surface-container-high active:scale-[0.98] transition-all" onclick="shareLiveEta(this)">
+<span class="material-symbols-outlined text-[19px] text-on-surface-variant">share</span>
+<span>Share ETA</span>
+</button>
+</div>
+</section>
+</div>
+
+            </div>
+
+            <!-- TAB 4: TICKETS (Aether Mobility Wallet + Fares & Passes) -->
+            <div id="mobileTab_tickets" class="mobile-tab-pane w-full hidden">
+                <div class="flex flex-col w-full space-y-space-md px-margin pb-space-xl">
+<!-- Smart Mobility Wallet Bento Container -->
+<div class="relative overflow-hidden rounded-xl bg-gradient-to-br from-primary via-primary-container to-tertiary p-space-md text-on-primary shadow-xl">
+<!-- Ambient Holographic Glow & Decorative Orbs -->
+<div class="absolute -right-12 -top-12 h-44 w-44 rounded-full bg-tertiary-fixed-dim/20 blur-2xl pointer-events-none"></div>
+<div class="absolute -left-10 -bottom-10 h-36 w-36 rounded-full bg-primary-fixed-dim/15 blur-xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col space-y-space-md">
+<!-- Top Row: Balance & Auto-Reload Status -->
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<div class="flex items-center space-x-1.5">
+<span class="font-label-sm text-label-sm text-tertiary-fixed tracking-wider uppercase font-semibold">Aether Mobility Wallet</span>
+<span class="material-symbols-outlined text-[16px] text-tertiary-fixed" style="font-variation-settings: &quot;FILL&quot; 1;">verified</span>
+</div>
+<div class="flex items-baseline space-x-1 mt-0.5"><span class="font-headline-xl-mobile text-headline-xl-mobile font-bold tracking-tight text-on-primary"><span class="wallet-balance-val">₹350.00</span></span><span class="font-label-md text-label-md text-tertiary-fixed/80">INR</span></div>
+</div>
+<!-- Auto-Reload Badge Pill -->
+<button class="flex items-center space-x-1.5 rounded-full bg-on-primary/15 px-3 py-1.5 backdrop-blur-md transition-all active:scale-95" id="toggle-autoreload">
+<span class="relative flex h-2 w-2">
+<span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-tertiary-fixed opacity-75"></span>
+<span class="relative inline-flex h-2 w-2 rounded-full bg-tertiary-fixed"></span>
+</span>
+<span class="font-label-sm text-label-sm text-on-primary font-medium tracking-wide">Auto-Reload Active</span>
+</button>
+</div>
+<!-- Quick Top-Up Presets -->
+<div class="flex items-center justify-between rounded-lg bg-inverse-surface/20 p-1.5 backdrop-blur-sm">
+<span class="font-label-sm text-label-sm text-surface-container-high px-2 font-medium">Quick Top-Up</span>
+<div class="flex items-center space-x-1.5"><button class="rounded-full bg-on-primary/10 hover:bg-on-primary/20 px-3 py-1 text-on-primary font-label-md text-label-md font-semibold transition-all active:scale-90" onclick="addBalance(100)">+₹100</button><button class="rounded-full bg-on-primary/10 hover:bg-on-primary/20 px-3 py-1 text-on-primary font-label-md text-label-md font-semibold transition-all active:scale-90" onclick="addBalance(200)">+₹200</button><button class="rounded-full bg-on-primary/20 hover:bg-on-primary/30 px-3.5 py-1 text-on-primary font-label-md text-label-md font-bold transition-all active:scale-90" onclick="addBalance(500)">+₹500</button></div>
+</div>
+</div>
+</div>
+<!-- Active Tap-to-Ride Digital Pass Card (NFC Live Beacon) -->
+<div class="relative overflow-hidden rounded-xl bg-surface-container-lowest p-space-md shadow-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-space-sm">
+<!-- Animated NFC Wave Beacon -->
+<div class="relative flex h-12 w-12 items-center justify-center rounded-xl bg-tertiary-container/15 text-tertiary-container">
+<span class="material-symbols-outlined text-[26px]">contactless</span>
+<span class="absolute -inset-1 rounded-xl bg-tertiary-container/10 animate-ping"></span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center space-x-2">
+<span class="font-headline-sm text-headline-sm text-on-surface">Tap-to-Ride Ready</span>
+<span class="rounded-full bg-tertiary-fixed/30 px-2 py-0.5 font-label-sm text-label-sm text-on-tertiary-fixed font-bold">NFC ON</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Scan phone against validator validator on boarding</span>
+</div>
+</div>
+<!-- View QR Trigger Button -->
+<button aria-label="Open Optical Turnstile QR" class="flex h-10 w-10 items-center justify-center rounded-full bg-surface-container hover:bg-surface-container-high text-primary transition-all active:scale-90" onclick="openPassModal()">
+<span class="material-symbols-outlined text-[22px]">qr_code_2</span>
+</button>
+</div>
+<!-- Micro Transit Visual Strip -->
+<div class="mt-3 flex items-center justify-between rounded-lg bg-surface-container-low px-3 py-2">
+<div class="flex items-center space-x-2">
+<span class="flex h-2 w-2 rounded-full bg-primary-container"></span>
+<span class="font-label-md text-label-md text-on-surface-variant">Valid on: Metro Red, Express 108 &amp; Coastal Tram</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-bold">Zones 1–3</span>
+</div>
+</div>
+<!-- Segmented Catalog Navigation -->
+<div class="flex flex-col space-y-space-xs">
+<div class="flex items-center justify-between px-1">
+<span class="font-headline-sm text-headline-sm text-on-surface">Available Fares</span>
+<span class="font-label-sm text-label-sm text-primary font-semibold">Citywide Tariff 2025</span>
+</div>
+<!-- Scrollable Pill Tabs -->
+<div class="flex space-x-2 overflow-x-auto pb-1 pt-1 no-scrollbar">
+<button class="fare-tab active flex items-center space-x-1.5 whitespace-nowrap rounded-full bg-primary-container px-4 py-2 text-on-primary font-label-md text-label-md shadow-sm transition-all" onclick="selectTab(this, 'single')">
+<span class="material-symbols-outlined text-[16px]">timer</span>
+<span>Single Ride</span>
+</button>
+<button class="fare-tab flex items-center space-x-1.5 whitespace-nowrap rounded-full bg-surface-container hover:bg-surface-container-high px-4 py-2 text-on-surface-variant font-label-md text-label-md transition-all" onclick="selectTab(this, 'day')">
+<span class="material-symbols-outlined text-[16px]">today</span>
+<span>Day Pass</span>
+</button>
+<button class="fare-tab flex items-center space-x-1.5 whitespace-nowrap rounded-full bg-surface-container hover:bg-surface-container-high px-4 py-2 text-on-surface-variant font-label-md text-label-md transition-all" onclick="selectTab(this, 'commuter')">
+<span class="material-symbols-outlined text-[16px]">date_range</span>
+<span>7-Day Commuter</span>
+</button>
+<button class="fare-tab flex items-center space-x-1.5 whitespace-nowrap rounded-full bg-surface-container hover:bg-surface-container-high px-4 py-2 text-on-surface-variant font-label-md text-label-md transition-all" onclick="selectTab(this, 'monthly')">
+<span class="material-symbols-outlined text-[16px]">all_inclusive</span>
+<span>Monthly Pass</span>
+</button>
+</div>
+</div>
+<!-- Ticket Catalog Grid -->
+<div class="flex flex-col space-y-3">
+<!-- Card 1: Single Metro & Bus Ticket (Active Selection) -->
+<div class="ticket-card relative cursor-pointer overflow-hidden rounded-xl bg-surface-container-lowest p-space-md shadow-sm hover:shadow-md transition-all ring-2 ring-primary" onclick="selectTicketCard(this, 2.25, 'Single Metro &amp; Bus Ride')">
+<div class="flex items-start justify-between">
+<div class="flex flex-col space-y-1">
+<div class="flex items-center space-x-2">
+<span class="font-headline-sm text-headline-sm text-on-surface">Single Metro &amp; Bus</span>
+<span class="rounded-full bg-tertiary-fixed/30 px-2 py-0.5 font-label-sm text-label-sm text-on-tertiary-fixed font-bold">Instant Activate</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">90 minutes unlimited transfers across all city transit vehicles.</p>
+</div>
+<div class="text-right">
+<span class="font-headline-md text-headline-md font-bold text-primary">₹25.00</span>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">1 person</span>
+</div>
+</div>
+<div class="mt-3 flex items-center justify-between pt-2">
+<div class="flex items-center space-x-2 text-tertiary">
+<span class="material-symbols-outlined text-[18px]">bolt</span>
+<span class="font-label-sm text-label-sm font-semibold">Immediate Turnstile Clearance</span>
+</div>
+<span class="material-symbols-outlined text-[20px] text-primary" style="font-variation-settings: &quot;FILL&quot; 1;">radio_button_checked</span>
+</div>
+</div>
+<!-- Card 2: 24-Hour Pass (Best Value Emerald) -->
+<div class="ticket-card relative cursor-pointer overflow-hidden rounded-xl bg-surface-container-lowest p-space-md shadow-sm hover:shadow-md transition-all" onclick="selectTicketCard(this, 6.50, '24-Hour Citywide Pass')">
+<div class="flex items-start justify-between">
+<div class="flex flex-col space-y-1">
+<div class="flex items-center space-x-2">
+<span class="font-headline-sm text-headline-sm text-on-surface">24-Hour Citywide Pass</span>
+<span class="rounded-full bg-tertiary-fixed/40 px-2 py-0.5 font-label-sm text-label-sm text-on-tertiary-fixed font-bold uppercase tracking-wider">Best Value</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Unlimited 24-hour access to high-frequency buses, light rail &amp; harbor ferries.</p>
+</div>
+<div class="text-right">
+<span class="font-headline-md text-headline-md font-bold text-on-surface">₹70.00</span>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">All Zones</span>
+</div>
+</div>
+<div class="mt-3 flex items-center justify-between pt-2">
+<div class="flex items-center space-x-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+<span class="font-label-sm text-label-sm">Free return guarantee during service delays</span>
+</div>
+<span class="material-symbols-outlined text-[20px] text-outline-variant">radio_button_unchecked</span>
+</div>
+</div>
+<!-- Card 3: 7-Day Commuter Pass -->
+<div class="ticket-card relative cursor-pointer overflow-hidden rounded-xl bg-surface-container-lowest p-space-md shadow-sm hover:shadow-md transition-all" onclick="selectTicketCard(this, 24.00, '7-Day Commuter Pass')">
+<div class="flex items-start justify-between">
+<div class="flex flex-col space-y-1">
+<div class="flex items-center space-x-2">
+<span class="font-headline-sm text-headline-sm text-on-surface">7-Day Commuter</span>
+<span class="rounded-full bg-secondary-container px-2 py-0.5 font-label-sm text-label-sm text-on-secondary-container font-semibold">Rush Hour Ready</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Engineered for weekday roundtrips with bypass priority during peak congestions.</p>
+</div>
+<div class="text-right">
+<span class="font-headline-md text-headline-md font-bold text-on-surface"><span class="wallet-balance-val">₹350.00</span></span>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">7 full days</span>
+</div>
+</div>
+<div class="mt-3 flex items-center justify-between pt-2">
+<div class="flex items-center space-x-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">speed</span>
+<span class="font-label-sm text-label-sm">Express bus line priority seating</span>
+</div>
+<span class="material-symbols-outlined text-[20px] text-outline-variant">radio_button_unchecked</span>
+</div>
+</div>
+<!-- Card 4: Monthly All-Access Pass (AI Copilot Included) -->
+<div class="ticket-card relative cursor-pointer overflow-hidden rounded-xl bg-surface-container-lowest p-space-md shadow-sm hover:shadow-md transition-all" onclick="selectTicketCard(this, 78.00, 'Monthly All-Access Pass')">
+<div class="flex items-start justify-between">
+<div class="flex flex-col space-y-1">
+<div class="flex items-center space-x-2">
+<span class="font-headline-sm text-headline-sm text-on-surface">Monthly All-Access</span>
+<span class="rounded-full bg-error-container px-2 py-0.5 font-label-sm text-label-sm text-on-error-container font-bold">Save 28%</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Full metropolitan freedom plus TransAI predictive rerouting &amp; seat reservations.</p>
+</div>
+<div class="text-right">
+<span class="font-headline-md text-headline-md font-bold text-on-surface">₹1,200.00</span>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">30 days</span>
+</div>
+</div>
+<div class="mt-3 flex items-center justify-between pt-2">
+<div class="flex items-center space-x-2 text-primary font-semibold">
+<span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+<span class="font-label-sm text-label-sm">TransAI Copilot Priority Access</span>
+</div>
+<span class="material-symbols-outlined text-[20px] text-outline-variant">radio_button_unchecked</span>
+</div>
+</div>
+</div>
+<!-- Live Visual Digital Ticket Preview / QR Drawer Modal -->
+<div class="fixed inset-0 z-50 flex items-end justify-center bg-inverse-surface/60 backdrop-blur-md transition-opacity duration-300 opacity-0 pointer-events-none" id="pass-modal">
+<div class="w-full max-w-lg rounded-t-2xl bg-surface p-space-md shadow-2xl transition-transform duration-300 transform translate-y-full flex flex-col space-y-space-md" id="pass-sheet">
+<!-- Sheet Handle -->
+<div class="mx-auto h-1 w-12 rounded-full bg-outline-variant"></div>
+<!-- Header & Close -->
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-primary text-[24px]">verified</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Digital Boarding Pass</span>
+</div>
+<button class="flex h-9 w-9 items-center justify-center rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant" onclick="closePassModal()">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- Holographic Ticket Card Element -->
+<div class="relative overflow-hidden rounded-xl bg-gradient-to-b from-surface-container-lowest to-surface-container-low p-space-md shadow-lg">
+<!-- Hologram Animated Banner -->
+<div class="relative h-2 w-full overflow-hidden rounded-full bg-surface-container-high mb-space-sm">
+<div class="absolute inset-0 bg-gradient-to-r from-primary via-tertiary to-primary-fixed animate-pulse"></div>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-primary uppercase font-bold tracking-wider">Multi-Transit Pass</span>
+<div class="flex items-center space-x-1.5 rounded-full bg-tertiary-fixed/30 px-2.5 py-0.5 text-on-tertiary-fixed">
+<span class="h-2 w-2 rounded-full bg-tertiary animate-pulse"></span>
+<span class="font-label-sm text-label-sm font-bold" id="pass-timer">Expires in 01h:24m:12s</span>
+</div>
+</div>
+<!-- Simulated Authentic QR Code -->
+<div class="my-space-md flex flex-col items-center justify-center">
+<div class="relative rounded-xl bg-surface-container-lowest p-3 shadow-md">
+<!-- Lightweight SVG QR Simulation -->
+<svg class="h-44 w-44 text-on-surface" fill="currentColor" viewBox="0 0 100 100">
+<rect fill="none" height="28" stroke="currentColor" stroke-width="4" width="28" x="5" y="5"></rect>
+<rect height="16" width="16" x="11" y="11"></rect>
+<rect fill="none" height="28" stroke="currentColor" stroke-width="4" width="28" x="67" y="5"></rect>
+<rect height="16" width="16" x="73" y="11"></rect>
+<rect fill="none" height="28" stroke="currentColor" stroke-width="4" width="28" x="5" y="67"></rect>
+<rect height="16" width="16" x="11" y="73"></rect>
+<!-- Data matrix dots -->
+<rect height="5" width="5" x="38" y="8"></rect><rect height="5" width="5" x="48" y="8"></rect><rect height="5" width="5" x="58" y="14"></rect>
+<rect height="5" width="5" x="38" y="24"></rect><rect height="5" width="5" x="48" y="20"></rect><rect height="5" width="5" x="58" y="28"></rect>
+<rect height="5" width="5" x="8" y="38"></rect><rect height="5" width="5" x="20" y="38"></rect><rect height="5" width="5" x="28" y="44"></rect>
+<rect height="8" width="8" x="38" y="38"></rect><rect height="6" width="6" x="52" y="38"></rect><rect height="5" width="5" x="68" y="38"></rect>
+<rect height="5" width="5" x="78" y="44"></rect><rect height="5" width="5" x="88" y="38"></rect>
+<rect height="6" width="6" x="38" y="52"></rect><rect height="5" width="5" x="48" y="58"></rect><rect height="6" width="6" x="60" y="52"></rect>
+<rect height="5" width="5" x="72" y="58"></rect><rect height="5" width="5" x="85" y="52"></rect>
+<rect height="6" width="6" x="38" y="68"></rect><rect height="5" width="5" x="48" y="74"></rect><rect height="6" width="6" x="58" y="68"></rect>
+<rect height="5" width="5" x="68" y="74"></rect><rect height="6" width="6" x="82" y="68"></rect><rect height="5" width="5" x="88" y="82"></rect>
+<rect height="5" width="5" x="38" y="85"></rect><rect height="6" width="6" x="52" y="82"></rect><rect height="5" width="5" x="65" y="85"></rect>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-sm">
+<span class="material-symbols-outlined text-[18px]">directions_bus</span>
+</div>
+</div>
+</div>
+<span class="mt-2 font-label-sm text-label-sm text-on-surface-variant font-medium">Auto-refreshes security token every 15s</span>
+</div>
+<!-- Route & Passenger Details -->
+<div class="flex items-center justify-between rounded-lg bg-surface-container px-3 py-2">
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">Validated Vehicles</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">Lines 42 • 108 • 88 Metro</span>
+</div>
+<div class="text-right">
+<span class="block font-label-sm text-label-sm text-on-surface-variant">Ticket ID</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">#AETH-8940-X</span>
+</div>
+</div>
+</div>
+<!-- Quick Action: Add to Wallet -->
+<button class="w-full flex items-center justify-center space-x-2 rounded-xl bg-inverse-surface py-3 text-on-primary font-label-md text-label-md transition-all active:scale-98" onclick="closePassModal()">
+<span class="material-symbols-outlined text-[20px]">wallet</span>
+<span>Save to Apple Wallet / Google Wallet</span>
+</button>
+</div>
+</div>
+<!-- Saved Payment Method & 1-Tap Selector -->
+<div class="flex flex-col space-y-space-xs rounded-xl bg-surface-container-low p-space-md">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Payment Method</span>
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-space-sm">
+<div class="flex h-10 w-14 items-center justify-center rounded-lg bg-surface-container-lowest shadow-sm">
+<span class="material-symbols-outlined text-primary text-[24px]">credit_card</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Visa ending in 4092</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Aether Auto-Debit Preferred</span>
+</div>
+</div>
+<button class="font-label-md text-label-md text-primary font-semibold hover:underline">Change</button>
+</div>
+</div>
+<!-- Primary Sticky Checkout Action Bar -->
+<div class="sticky bottom-0 z-40 -mx-margin px-margin pt-space-xs pb-space-xs bg-surface/90 backdrop-blur-xl">
+<div class="flex items-center space-x-2">
+<!-- Fast Pay Shortcut (Apple/Google Pay) -->
+<button aria-label="1-Tap Pay" class="flex h-14 w-16 items-center justify-center rounded-xl bg-inverse-surface text-on-primary shadow-md active:scale-95 transition-transform" onclick="simulateFastPay()">
+<span class="material-symbols-outlined text-[24px]">contactless</span>
+</button>
+<!-- Main Dynamic CTA Button -->
+<button class="flex-1 flex h-14 items-center justify-center space-x-2 rounded-xl bg-primary-container hover:bg-primary px-space-md text-on-primary shadow-md transition-all active:scale-[0.98]" id="cta-button" onclick="executePurchase()">
+<span class="material-symbols-outlined text-[20px]">security</span>
+<span class="font-headline-sm text-headline-sm font-semibold" id="cta-text">Purchase Ticket • ₹25.00</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+<div class="mt-2 flex items-center justify-center space-x-2">
+<span class="material-symbols-outlined text-[14px] text-tertiary">lock</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Biometric protected • Encrypted transit token</span>
+</div>
+</div>
+</div>
+
+            </div>
+
+            <!-- TAB 5: PROFILE (Alex Mercer ID + Commute Engine Settings) -->
+            <div id="mobileTab_profile" class="mobile-tab-pane w-full hidden">
+                <div class="flex flex-col w-full px-margin pb-10 gap-space-lg">
+<!-- Commuter Card (Delightful Holographic Identity) -->
+<section class="relative overflow-hidden rounded-xl bg-gradient-to-br from-primary via-primary-container to-tertiary text-on-primary p-space-lg shadow-xl shadow-primary/20">
+<div class="absolute -right-8 -bottom-10 w-44 h-44 rounded-full bg-white/10 blur-2xl pointer-events-none"></div>
+<div class="absolute top-2 right-4 text-white/20 select-none">
+<span class="material-symbols-outlined text-[80px] leading-none opacity-40">hub</span>
+</div>
+<div class="relative z-10 flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/15 backdrop-blur-md">
+<span class="material-symbols-outlined text-[14px] text-tertiary-fixed">eco</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-tertiary-fixed">Eco Tier Status</span>
+</div>
+<button class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container-lowest/20 hover:bg-surface-container-lowest/30 transition-all text-on-primary" id="qr-trigger">
+<span class="material-symbols-outlined text-[16px]">qr_code_2</span>
+<span class="font-label-sm text-label-sm font-semibold">Virtual Pass</span>
+</button>
+</div>
+<div class="flex items-center gap-space-md">
+<div class="relative">
+<img class="w-16 h-16 rounded-full object-cover shadow-md ring-4 ring-white/30" data-alt="Warm and modern studio portrait of Alex, a smiling 28-year-old urban commuter wearing sleek wireless headphones and a deep navy jacket, bright daylight, high fidelity, 8k resolution" src="assets/img/portrait_alex.png">
+<span class="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-primary-fixed ring-2 ring-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[10px] text-on-primary-fixed font-bold">verified</span>
+</span>
+</div>
+<div class="flex flex-col min-w-0">
+<h1 class="font-headline-md text-headline-md text-on-primary truncate">Alex Mercer</h1>
+<p class="font-label-sm text-label-sm text-primary-fixed flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary-fixed">workspace_premium</span>
+            Aether Gold Member • Eco Rider
+          </p>
+<span class="font-body-sm text-body-sm text-white/80 mt-0.5">Transit ID: #TR-9820-410</span>
+</div>
+</div>
+<!-- Live Virtual RFID Chip Ribbon -->
+<div class="flex items-center justify-between pt-space-xs border-t-0 bg-white/10 px-3 py-2 rounded-lg backdrop-blur-sm">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed-dim animate-ping"></span>
+<span class="font-body-sm text-body-sm font-medium text-white/95">NFC Instant Tap Ready</span>
+</div>
+<span class="font-label-sm text-label-sm tracking-widest text-white/80 uppercase">Card: •••• 9214</span>
+</div>
+</div>
+</section>
+<!-- Sustainability & Commuter Impact Bento Trio -->
+<section class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[20px]">insights</span>
+        Lifetime Commuter Impact
+      </h2>
+<span class="font-label-sm text-label-sm text-tertiary font-semibold">Top 4% in Region</span>
+</div>
+<div class="grid grid-cols-3 gap-2.5">
+<!-- Card 1 -->
+<div class="flex flex-col items-center justify-center p-3 rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow text-center">
+<div class="w-9 h-9 rounded-full bg-tertiary/10 text-tertiary flex items-center justify-center mb-1.5">
+<span class="material-symbols-outlined text-[20px]">forest</span>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface font-bold">84 <span class="font-body-sm text-body-sm text-on-surface-variant font-normal">kg</span></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase mt-0.5">CO₂ Offset</span>
+</div>
+<!-- Card 2 -->
+<div class="flex flex-col items-center justify-center p-3 rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow text-center">
+<div class="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-1.5">
+<span class="material-symbols-outlined text-[20px]">directions_bus</span>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface font-bold">142</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase mt-0.5">Transit Trips</span>
+</div>
+<!-- Card 3 -->
+<div class="flex flex-col items-center justify-center p-3 rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow text-center">
+<div class="w-9 h-9 rounded-full bg-surface-container-highest text-on-surface flex items-center justify-center mb-1.5">
+<span class="material-symbols-outlined text-[20px]">savings</span>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface font-bold">$186</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase mt-0.5">Gas Saved</span>
+</div>
+</div>
+</section>
+<!-- Frequent Locations (Quick Edit) -->
+<section class="flex flex-col gap-space-sm bg-surface-container-lowest p-space-md rounded-xl shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">share_location</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Home &amp; Work Anchors</h2>
+</div>
+<button class="font-label-sm text-label-sm text-primary hover:text-primary-container font-semibold transition-colors">Manage Pins</button>
+</div>
+<!-- Home Row -->
+<div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-8 h-8 rounded-full bg-surface-container-lowest flex items-center justify-center text-primary group-hover:scale-105 transition-transform shadow-xs">
+<span class="material-symbols-outlined text-[18px]">home</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface">Home Station</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">742 Evergreen Terrace • Bay 3</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant group-hover:text-primary transition-colors">edit</span>
+</div>
+<!-- Work Row -->
+<div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-8 h-8 rounded-full bg-surface-container-lowest flex items-center justify-center text-tertiary group-hover:scale-105 transition-transform shadow-xs">
+<span class="material-symbols-outlined text-[18px]">apartment</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface">Workplace Hub</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Silicon Valley Tech Park (Bldg 4)</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant group-hover:text-primary transition-colors">edit</span>
+</div>
+</section>
+<!-- Mobility Preferences & AI Crowding Filters -->
+<section class="flex flex-col gap-space-sm bg-surface-container-lowest p-space-md rounded-xl shadow-sm">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Commute Optimization Engine</h2>
+</div>
+<div class="flex flex-col divide-y-0 gap-2">
+<!-- Toggle: Avoid Crowded Buses -->
+<div class="flex items-center justify-between p-2 rounded-lg hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">groups</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Avoid Packed Vehicles</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Reroute if occupancy &gt; 80%</span>
+</div>
+</div>
+<button aria-checked="true" class="toggle-btn w-11 h-6 rounded-full bg-primary-container p-0.5 flex items-center justify-end transition-colors duration-200" role="switch">
+<span class="w-5 h-5 rounded-full bg-surface-container-lowest shadow-sm transform transition-transform"></span>
+</button>
+</div>
+<!-- Toggle: Prefer Electric Fleet -->
+<div class="flex items-center justify-between p-2 rounded-lg hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary text-[20px]">bolt</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Prefer Zero-Emission Buses</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Prioritize clean e-fleets</span>
+</div>
+</div>
+<button aria-checked="true" class="toggle-btn w-11 h-6 rounded-full bg-tertiary-container p-0.5 flex items-center justify-end transition-colors duration-200" role="switch">
+<span class="w-5 h-5 rounded-full bg-surface-container-lowest shadow-sm transform transition-transform"></span>
+</button>
+</div>
+<!-- Toggle: Step-Free Access -->
+<div class="flex items-center justify-between p-2 rounded-lg hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">accessible</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Step-Free / Ramp Required</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Low-floor fleet &amp; working kneeling ramps</span>
+</div>
+</div>
+<button aria-checked="false" class="toggle-btn w-11 h-6 rounded-full bg-surface-container-highest p-0.5 flex items-center justify-start transition-colors duration-200" role="switch">
+<span class="w-5 h-5 rounded-full bg-surface-container-lowest shadow-sm transform transition-transform"></span>
+</button>
+</div>
+</div>
+</section>
+<!-- Real-Time AI Sentinel Alerts -->
+<section class="flex flex-col gap-space-sm bg-surface-container-lowest p-space-md rounded-xl shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-surface-container-highest flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">radar</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">AI Sentinel Push &amp; Haptics</h2>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-primary-fixed text-primary font-label-sm text-label-sm">Active 24/7</span>
+</div>
+<div class="flex flex-col gap-2">
+<!-- Delay Alerts -->
+<div class="flex items-center justify-between p-2 rounded-lg hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">notification_important</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Push Line Delays &gt; 3 Mins</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Instant telemetry route alerts</span>
+</div>
+</div>
+<button aria-checked="true" class="toggle-btn w-11 h-6 rounded-full bg-primary-container p-0.5 flex items-center justify-end transition-colors duration-200" role="switch">
+<span class="w-5 h-5 rounded-full bg-surface-container-lowest shadow-sm"></span>
+</button>
+</div>
+<!-- Arrival Haptic Pulses -->
+<div class="flex items-center justify-between p-2 rounded-lg hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">vibration</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Arrival Vibration Pulse</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Vibrate device when bus is 200m away</span>
+</div>
+</div>
+<button aria-checked="true" class="toggle-btn w-11 h-6 rounded-full bg-primary-container p-0.5 flex items-center justify-end transition-colors duration-200" role="switch">
+<span class="w-5 h-5 rounded-full bg-surface-container-lowest shadow-sm"></span>
+</button>
+</div>
+<!-- Departure Bell Chimes -->
+<div class="flex items-center justify-between p-2 rounded-lg hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">volume_up</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Audio Chimes for Next Stop</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Subtle chime for headphones</span>
+</div>
+</div>
+<button aria-checked="false" class="toggle-btn w-11 h-6 rounded-full bg-surface-container-highest p-0.5 flex items-center justify-start transition-colors duration-200" role="switch">
+<span class="w-5 h-5 rounded-full bg-surface-container-lowest shadow-sm"></span>
+</button>
+</div>
+</div>
+</section>
+<!-- Wallet & Rapid Pass Instruments -->
+<section class="flex flex-col gap-space-sm bg-surface-container-lowest p-space-md rounded-xl shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">account_balance_wallet</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Payment Methods</h2>
+</div>
+<button class="font-label-sm text-label-sm text-primary font-semibold hover:text-primary-container transition-colors">+ Add Card</button>
+</div>
+<!-- Active Cards List -->
+<div class="flex flex-col gap-2">
+<!-- Apple Pay -->
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low">
+<div class="flex items-center gap-3">
+<div class="w-9 h-7 rounded bg-on-background text-surface flex items-center justify-center font-bold text-[12px] shadow-xs">
+            Pay
+          </div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface flex items-center gap-1.5">
+              Apple Pay Express Transit
+              <span class="px-1.5 py-0.2 rounded bg-tertiary-fixed text-on-tertiary-fixed text-[10px] font-bold">Default</span>
+</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Instant scan without Face ID</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-[20px] text-tertiary">check_circle</span>
+</div>
+<!-- Corporate Benefit Card -->
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low">
+<div class="flex items-center gap-3">
+<div class="w-9 h-7 rounded bg-primary-container text-on-primary flex items-center justify-center font-bold text-[10px]">
+            CORP
+          </div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Corporate Commuter Visa</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">•••• 4092 • $140 monthly allowance</span>
+</div>
+</div>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Recent Transit Rides Feed -->
+<div class="mt-2 pt-3 border-t-0 flex flex-col gap-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Recent Ride Invoices</span>
+<!-- Ride 1 -->
+<div class="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold text-[12px]">
+            42
+          </div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Line 42 Express • Rapid</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Yesterday 5:45 PM</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-label-md text-label-md text-on-surface font-semibold">₹25.00</span>
+<span class="block font-body-sm text-[10px] text-tertiary font-medium">Billed to Apple Pay</span>
+</div>
+</div>
+<!-- Ride 2 -->
+<div class="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed font-bold text-[12px]">
+            88
+          </div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Metro Feeder 88</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Oct 22, 8:12 AM</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-label-md text-label-md text-on-surface font-semibold">₹15.00</span>
+<span class="block font-body-sm text-[10px] text-tertiary font-medium">Corporate Pass</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Application Settings & Telemetry Precision -->
+<section class="flex flex-col gap-space-sm bg-surface-container-lowest p-space-md rounded-xl shadow-sm">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Application System Core</h2>
+</div>
+<!-- Theme Selector Pills -->
+<div class="flex flex-col gap-2">
+<span class="font-label-md text-label-md text-on-surface">Visual Appearance</span>
+<div class="grid grid-cols-3 gap-2 p-1 bg-surface-container-low rounded-xl">
+<button class="py-2 px-3 rounded-lg bg-surface-container-lowest text-primary font-label-md text-label-md shadow-xs flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]">light_mode</span>
+          Light
+        </button>
+<button class="py-2 px-3 rounded-lg text-on-surface-variant hover:text-on-surface font-label-md text-label-md flex items-center justify-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-[18px]">dark_mode</span>
+          Dark
+        </button>
+<button class="py-2 px-3 rounded-lg text-on-surface-variant hover:text-on-surface font-label-md text-label-md flex items-center justify-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-[18px]">settings_brightness</span>
+          System
+        </button>
+</div>
+</div>
+<!-- Offline Timetable Cache -->
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-tertiary-fixed flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[18px]">offline_pin</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Offline Network Cache</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Downloaded (45 MB) • Auto-sync on Wi-Fi</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-[20px] text-tertiary">sync_saved_locally</span>
+</div>
+<!-- GPS Precision -->
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">gps_fixed</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Positioning Precision</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">High Accuracy RTK • Sub-meter</span>
+</div>
+</div>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-primary-container text-on-primary font-bold">Ultra</span>
+</div>
+</section>
+<!-- Support, Emergency SOS & Safe Account Actions -->
+<section class="flex flex-col gap-space-sm">
+<!-- SOS Transit Security (Crimson Accent) -->
+<a class="flex items-center justify-between p-space-md rounded-xl bg-error-container text-on-error-container shadow-sm hover:shadow-md transition-all active:scale-[0.99]" href="#">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-error text-on-error flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">emergency</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg font-bold">Transit Emergency Assistance</span>
+<span class="font-body-sm text-body-sm opacity-90">24/7 Security dispatch &amp; vehicle silent alert</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</a>
+<!-- Support and Lost Items -->
+<div class="flex gap-2">
+<button class="flex-1 p-3 rounded-xl bg-surface-container-lowest shadow-sm flex items-center justify-center gap-2 hover:bg-surface-container-low transition-colors text-on-surface">
+<span class="material-symbols-outlined text-primary text-[20px]">live_help</span>
+<span class="font-label-md text-label-md">Help Desk</span>
+</button>
+<button class="flex-1 p-3 rounded-xl bg-surface-container-lowest shadow-sm flex items-center justify-center gap-2 hover:bg-surface-container-low transition-colors text-on-surface">
+<span class="material-symbols-outlined text-tertiary text-[20px]">find_in_page</span>
+<span class="font-label-md text-label-md">Lost &amp; Found</span>
+</button>
+</div>
+<!-- Crisp Logout Action -->
+<div class="pt-2">
+<button class="w-full py-3.5 px-4 rounded-xl bg-surface-container-lowest hover:bg-error-container/40 text-error font-label-lg text-label-lg flex items-center justify-center gap-2 transition-all shadow-sm active:scale-[0.98]" id="logout-btn">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span>Log Out of TransAI Account</span>
+</button>
+<p class="font-body-sm text-body-sm text-center text-on-surface-variant mt-3">
+        Aether Mobility Systems • Version 4.12.0 (Build 9042)
+      </p>
+</div>
+</section>
+</div>
+
+            </div>
+
+        </main>
+
+        <!-- Native Mobile Bottom Navigation Bar (Fixed Edge-to-Edge) -->
+        <nav class="fixed bottom-0 inset-x-0 h-16 z-40 pb-safe bg-surface/90 backdrop-blur-xl border-t border-surface-container-high shadow-lg">
+            <div class="flex justify-around items-center h-full px-2">
+                <button class="mobile-nav-btn flex flex-col items-center justify-center gap-0.5 min-w-[56px] text-primary-container font-semibold transition-colors" data-tab="home" onclick="switchMobileTab('home')">
+                    <span class="material-symbols-outlined text-[24px]">home</span>
+                    <span class="font-label-sm text-label-sm text-[11px]">Home</span>
+                </button>
+                <button class="mobile-nav-btn flex flex-col items-center justify-center gap-0.5 min-w-[56px] text-on-surface-variant hover:text-primary transition-colors" data-tab="explore" onclick="switchMobileTab('explore')">
+                    <span class="material-symbols-outlined text-[24px]">explore</span>
+                    <span class="font-label-sm text-label-sm text-[11px]">Explore</span>
+                </button>
+                <button class="mobile-nav-btn flex flex-col items-center justify-center gap-0.5 min-w-[56px] text-on-surface-variant hover:text-primary transition-colors" data-tab="live-tracking" onclick="switchMobileTab('live-tracking')">
+                    <span class="material-symbols-outlined text-[24px]">directions_bus</span>
+                    <span class="font-label-sm text-label-sm text-[11px]">Live Track</span>
+                </button>
+                <button class="mobile-nav-btn flex flex-col items-center justify-center gap-0.5 min-w-[56px] text-on-surface-variant hover:text-primary transition-colors" data-tab="tickets" onclick="switchMobileTab('tickets')">
+                    <span class="material-symbols-outlined text-[24px]">confirmation_number</span>
+                    <span class="font-label-sm text-label-sm text-[11px]">Tickets</span>
+                </button>
+                <button class="mobile-nav-btn flex flex-col items-center justify-center gap-0.5 min-w-[56px] text-on-surface-variant hover:text-primary transition-colors" data-tab="profile" onclick="switchMobileTab('profile')">
+                    <span class="material-symbols-outlined text-[24px]">person</span>
+                    <span class="font-label-sm text-label-sm text-[11px]">Profile</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Turnstile QR Drawer Modal -->
+        <div class="fixed inset-0 z-50 flex items-end justify-center bg-inverse-surface/60 backdrop-blur-md transition-opacity duration-300 opacity-0 pointer-events-none" id="pass-modal" onclick="closePassModal()">
+            <div class="w-full max-w-lg rounded-t-2xl bg-surface p-space-md shadow-2xl transition-transform duration-300 transform translate-y-full flex flex-col space-y-space-md" id="pass-sheet" onclick="event.stopPropagation()">
+                <div class="mx-auto h-1 w-12 rounded-full bg-outline-variant cursor-pointer" onclick="closePassModal()"></div>
+                
+                <div class="flex items-center justify-between border-b border-surface-container-high pb-2">
+                    <div class="flex items-center space-x-2">
+                        <span class="material-symbols-outlined text-[24px] text-primary">qr_code_2</span>
+                        <span class="font-headline-sm text-headline-sm font-bold text-on-surface">Digital Turnstile Gate Pass</span>
+                    </div>
+                    <button class="flex h-8 w-8 items-center justify-center rounded-full bg-surface-container text-on-surface-variant hover:bg-surface-container-high" onclick="closePassModal()">
+                        <span class="material-symbols-outlined text-[18px]">close</span>
+                    </button>
+                </div>
+
+                <div class="flex flex-col items-center justify-center py-2 text-center">
+                    <div class="relative flex h-52 w-52 items-center justify-center rounded-2xl bg-surface-container-lowest p-3 shadow-md ring-4 ring-primary/20">
+                        <svg class="h-44 w-44 text-on-surface" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M2 2h8v8H2V2zm2 2v4h4V4H4zm10-2h8v8h-8V2zm2 2v4h4V4h-4zM2 14h8v8H2v-8zm2 2v4h4v-4H4zm14 0h4v2h-4v-2zm-4 0h2v4h-2v-4zm4 4h4v2h-4v-2zm-2-2h2v2h-2v-2zm-2 2h2v2h-2v-2z"></path>
+                        </svg>
+                        <div class="absolute inset-0 rounded-2xl border-2 border-emerald-500 animate-pulse pointer-events-none"></div>
+                    </div>
+
+                    <span class="mt-3 font-mono text-[12px] font-bold uppercase tracking-widest text-emerald-700 bg-emerald-500/10 px-3 py-1 rounded-full">
+                        TOKEN: #AETHER-8924-GATE-OK
+                    </span>
+                    <span class="mt-1 font-label-sm text-label-sm font-bold text-on-surface-variant" id="pass-timer">
+                        Expires in 01h:24m:12s
+                    </span>
+                    <p class="mt-1 font-body-sm text-body-sm text-on-surface-variant max-w-xs">
+                        Hold screen 2 inches from optical reader or NFC turnstile validator.
+                    </p>
+                </div>
+
+                <div class="pt-2">
+                    <button class="w-full py-3 rounded-xl bg-primary text-on-primary font-label-lg text-label-lg font-bold shadow-md hover:bg-primary-container transition-all" onclick="closePassModal()">
+                        Done & Return
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Shared Reactive State Engine -->
+    <script src="assets/js/stitch-app.js"></script>
+
+    <script>
+    // Mobile Tab Switching
+    function switchMobileTab(tabId) {
+        document.querySelectorAll('.mobile-tab-pane').forEach(el => {
+            el.classList.add('hidden');
+        });
+
+        const target = document.getElementById('mobileTab_' + tabId);
+        if (target) {
+            target.classList.remove('hidden');
+        }
+
+        document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+            if (btn.getAttribute('data-tab') === tabId) {
+                btn.classList.add('text-primary-container', 'font-semibold');
+                btn.classList.remove('text-on-surface-variant');
+            } else {
+                btn.classList.remove('text-primary-container', 'font-semibold');
+                btn.classList.add('text-on-surface-variant');
+            }
+        });
+
+        window.scrollTo(0, 0);
+    }
+    </script>
+
+</body>
+</html>

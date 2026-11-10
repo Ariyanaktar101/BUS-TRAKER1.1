@@ -1,0 +1,436 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"><meta content="mobile_tab" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"background":"#f8f9ff","outline":"#737686","primary-fixed":"#dbe1ff","on-tertiary-fixed-variant":"#004e5c","surface-variant":"#d3e4fe","on-secondary":"#ffffff","on-background":"#0b1c30","surface-container-low":"#eff4ff","on-surface":"#0b1c30","on-tertiary-fixed":"#001f26","on-tertiary-container":"#d7f6ff","surface-container-high":"#dce9ff","on-secondary-fixed":"#141b2c","surface-container":"#e5eeff","on-primary-fixed-variant":"#003ea8","secondary":"#565e71","surface-container-lowest":"#ffffff","on-tertiary":"#ffffff","surface-container-highest":"#d3e4fe","tertiary":"#005e6e","inverse-primary":"#b4c5ff","on-secondary-container":"#5c6477","secondary-container":"#dbe2f9","inverse-surface":"#213145","on-primary":"#ffffff","tertiary-fixed":"#acedff","on-secondary-fixed-variant":"#3f4759","on-surface-variant":"#434655","surface-dim":"#cbdbf5","on-primary-container":"#eeefff","error-container":"#ffdad6","primary-container":"#2563eb","outline-variant":"#c3c6d7","on-primary-fixed":"#00174b","secondary-fixed":"#dbe2f9","error":"#ba1a1a","tertiary-container":"#00788c","surface-tint":"#0053db","tertiary-fixed-dim":"#4cd7f6","surface":"#f8f9ff","secondary-fixed-dim":"#bfc6dc","primary":"#004ac6","on-error":"#ffffff","surface-bright":"#f8f9ff","primary-fixed-dim":"#b4c5ff","inverse-on-surface":"#eaf1ff","on-error-container":"#93000a"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"gutter-desktop":"2rem","space-lg":"1.5rem","margin":"1rem","space-xs":"0.25rem","space-md":"1rem","margin-desktop":"3rem","space-xl":"2rem","space-sm":"0.5rem","gutter-tablet":"1.5rem","gutter":"1rem","margin-tablet":"2rem"},"fontFamily":{"headline-lg":["Inter"],"body-lg":["Inter"],"headline-md":["Inter"],"label-lg":["Inter"],"body-sm":["Inter"],"headline-xl":["Inter"],"headline-xl-mobile":["Inter"],"headline-sm":["Inter"],"label-md":["Inter"],"label-sm":["Inter"],"body-md":["Inter"]},"fontSize":{"headline-lg":["24px",{"lineHeight":"32px","letterSpacing":"-0.015em","fontWeight":"600"}],"body-lg":["16px",{"lineHeight":"24px","letterSpacing":"0","fontWeight":"400"}],"headline-md":["20px",{"lineHeight":"28px","letterSpacing":"-0.01em","fontWeight":"600"}],"label-lg":["14px",{"lineHeight":"20px","letterSpacing":"0.01em","fontWeight":"600"}],"body-sm":["12px",{"lineHeight":"16px","letterSpacing":"0.01em","fontWeight":"400"}],"headline-xl":["36px",{"lineHeight":"44px","letterSpacing":"-0.02em","fontWeight":"700"}],"headline-xl-mobile":["28px",{"lineHeight":"36px","letterSpacing":"-0.02em","fontWeight":"700"}],"headline-sm":["16px",{"lineHeight":"24px","letterSpacing":"0","fontWeight":"600"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.02em","fontWeight":"600"}],"label-sm":["10px",{"lineHeight":"14px","letterSpacing":"0.04em","fontWeight":"700"}],"body-md":["14px",{"lineHeight":"20px","letterSpacing":"0","fontWeight":"400"}]}}}}</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-on-surface antialiased flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-margin flex items-center justify-between"><div class="flex items-center gap-space-sm"><img alt="AI Bus Tracker Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJvlrF2FxKZBHOyunPa04wdsCox4QC-oypd5wb-L3SoZizeDXY8E5Rp_CTdZ6z8A_9t3DwEZ2I-q6C-HEZjD22O2F-_uKhEezu5UtkEGjflHkB2MCmXUzqnOAgX3WEbNePUdKaiSQLXiNuqVAQ7b9giJKxnOinbR_59nszUW1C3rDX3sFOU73qdZb5O0_u7A6HOCPPcRmU8sG-CLw4OIexIBrFjqAgHbUG-zpX-fTbHvZ32biiKDaYuw"><div class="flex flex-col"><div class="flex items-center gap-1.5"><span class="font-label-sm text-primary uppercase tracking-wider">TransAI</span><span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-surface-container-high text-tertiary font-label-sm text-[10px]"><span class="w-1.5 h-1.5 rounded-full bg-tertiary-container animate-pulse"></span>Live Sync</span></div><span class="font-headline-sm text-headline-sm text-on-surface leading-tight">Tickets And Passes</span></div></div><div class="flex items-center gap-space-xs"><button aria-label="Notifications" class="relative w-11 h-11 flex items-center justify-center rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/60 transition-colors"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-primary-container ring-2 ring-surface"></span></button><a class="w-11 h-11 flex items-center justify-center rounded-full" data-path="profile" href="#"><img alt="Commuter Profile" class="w-8 h-8 rounded-full object-cover ring-2 ring-primary/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDy_muJZDvDqRbnvQbRbN7LuLEFlaifkTBB7eKXbCI4CZBqczbQewsgA_ortobcY4Xmb1PcIqw-F9Q0z1cNFQLpvwBbAhAVfZMUiKdMvYAWGzu6p4kZXBiaRcSeYVHzfgEqxUlICf1NcdwiT2vmNpgRf9i3Sz8M757o3zz80Mt5eifb-IMXSY0MAvG7Mefjw7banipuce5S9o_H2mPcaYMH2plGHuXTQ-Ov4vmYazHL"></a></div></div></header><main class="flex flex-col relative w-full pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full space-y-space-md px-margin pb-space-xl">
+<!-- Smart Mobility Wallet Bento Container -->
+<div class="relative overflow-hidden rounded-xl bg-gradient-to-br from-primary via-primary-container to-tertiary p-space-md text-on-primary shadow-xl">
+<!-- Ambient Holographic Glow & Decorative Orbs -->
+<div class="absolute -right-12 -top-12 h-44 w-44 rounded-full bg-tertiary-fixed-dim/20 blur-2xl pointer-events-none"></div>
+<div class="absolute -left-10 -bottom-10 h-36 w-36 rounded-full bg-primary-fixed-dim/15 blur-xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col space-y-space-md">
+<!-- Top Row: Balance & Auto-Reload Status -->
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<div class="flex items-center space-x-1.5">
+<span class="font-label-sm text-label-sm text-tertiary-fixed tracking-wider uppercase font-semibold">Aether Mobility Wallet</span>
+<span class="material-symbols-outlined text-[16px] text-tertiary-fixed" style="font-variation-settings: &quot;FILL&quot; 1;">verified</span>
+</div>
+<div class="flex items-baseline space-x-1 mt-0.5"><span class="font-headline-xl-mobile text-headline-xl-mobile font-bold tracking-tight text-on-primary">₹350.00</span><span class="font-label-md text-label-md text-tertiary-fixed/80">INR</span></div>
+</div>
+<!-- Auto-Reload Badge Pill -->
+<button class="flex items-center space-x-1.5 rounded-full bg-on-primary/15 px-3 py-1.5 backdrop-blur-md transition-all active:scale-95" id="toggle-autoreload">
+<span class="relative flex h-2 w-2">
+<span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-tertiary-fixed opacity-75"></span>
+<span class="relative inline-flex h-2 w-2 rounded-full bg-tertiary-fixed"></span>
+</span>
+<span class="font-label-sm text-label-sm text-on-primary font-medium tracking-wide">Auto-Reload Active</span>
+</button>
+</div>
+<!-- Quick Top-Up Presets -->
+<div class="flex items-center justify-between rounded-lg bg-inverse-surface/20 p-1.5 backdrop-blur-sm">
+<span class="font-label-sm text-label-sm text-surface-container-high px-2 font-medium">Quick Top-Up</span>
+<div class="flex items-center space-x-1.5"><button class="rounded-full bg-on-primary/10 hover:bg-on-primary/20 px-3 py-1 text-on-primary font-label-md text-label-md font-semibold transition-all active:scale-90" onclick="addBalance(100)">+₹100</button><button class="rounded-full bg-on-primary/10 hover:bg-on-primary/20 px-3 py-1 text-on-primary font-label-md text-label-md font-semibold transition-all active:scale-90" onclick="addBalance(200)">+₹200</button><button class="rounded-full bg-on-primary/20 hover:bg-on-primary/30 px-3.5 py-1 text-on-primary font-label-md text-label-md font-bold transition-all active:scale-90" onclick="addBalance(500)">+₹500</button></div>
+</div>
+</div>
+</div>
+<!-- Active Tap-to-Ride Digital Pass Card (NFC Live Beacon) -->
+<div class="relative overflow-hidden rounded-xl bg-surface-container-lowest p-space-md shadow-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-space-sm">
+<!-- Animated NFC Wave Beacon -->
+<div class="relative flex h-12 w-12 items-center justify-center rounded-xl bg-tertiary-container/15 text-tertiary-container">
+<span class="material-symbols-outlined text-[26px]">contactless</span>
+<span class="absolute -inset-1 rounded-xl bg-tertiary-container/10 animate-ping"></span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center space-x-2">
+<span class="font-headline-sm text-headline-sm text-on-surface">Tap-to-Ride Ready</span>
+<span class="rounded-full bg-tertiary-fixed/30 px-2 py-0.5 font-label-sm text-label-sm text-on-tertiary-fixed font-bold">NFC ON</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Scan phone against validator validator on boarding</span>
+</div>
+</div>
+<!-- View QR Trigger Button -->
+<button aria-label="Open Optical Turnstile QR" class="flex h-10 w-10 items-center justify-center rounded-full bg-surface-container hover:bg-surface-container-high text-primary transition-all active:scale-90" onclick="openPassModal()">
+<span class="material-symbols-outlined text-[22px]">qr_code_2</span>
+</button>
+</div>
+<!-- Micro Transit Visual Strip -->
+<div class="mt-3 flex items-center justify-between rounded-lg bg-surface-container-low px-3 py-2">
+<div class="flex items-center space-x-2">
+<span class="flex h-2 w-2 rounded-full bg-primary-container"></span>
+<span class="font-label-md text-label-md text-on-surface-variant">Valid on: Metro Red, Express 108 &amp; Coastal Tram</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-bold">Zones 1–3</span>
+</div>
+</div>
+<!-- Segmented Catalog Navigation -->
+<div class="flex flex-col space-y-space-xs">
+<div class="flex items-center justify-between px-1">
+<span class="font-headline-sm text-headline-sm text-on-surface">Available Fares</span>
+<span class="font-label-sm text-label-sm text-primary font-semibold">Citywide Tariff 2025</span>
+</div>
+<!-- Scrollable Pill Tabs -->
+<div class="flex space-x-2 overflow-x-auto pb-1 pt-1 no-scrollbar">
+<button class="fare-tab active flex items-center space-x-1.5 whitespace-nowrap rounded-full bg-primary-container px-4 py-2 text-on-primary font-label-md text-label-md shadow-sm transition-all" onclick="selectTab(this, 'single')">
+<span class="material-symbols-outlined text-[16px]">timer</span>
+<span>Single Ride</span>
+</button>
+<button class="fare-tab flex items-center space-x-1.5 whitespace-nowrap rounded-full bg-surface-container hover:bg-surface-container-high px-4 py-2 text-on-surface-variant font-label-md text-label-md transition-all" onclick="selectTab(this, 'day')">
+<span class="material-symbols-outlined text-[16px]">today</span>
+<span>Day Pass</span>
+</button>
+<button class="fare-tab flex items-center space-x-1.5 whitespace-nowrap rounded-full bg-surface-container hover:bg-surface-container-high px-4 py-2 text-on-surface-variant font-label-md text-label-md transition-all" onclick="selectTab(this, 'commuter')">
+<span class="material-symbols-outlined text-[16px]">date_range</span>
+<span>7-Day Commuter</span>
+</button>
+<button class="fare-tab flex items-center space-x-1.5 whitespace-nowrap rounded-full bg-surface-container hover:bg-surface-container-high px-4 py-2 text-on-surface-variant font-label-md text-label-md transition-all" onclick="selectTab(this, 'monthly')">
+<span class="material-symbols-outlined text-[16px]">all_inclusive</span>
+<span>Monthly Pass</span>
+</button>
+</div>
+</div>
+<!-- Ticket Catalog Grid -->
+<div class="flex flex-col space-y-3">
+<!-- Card 1: Single Metro & Bus Ticket (Active Selection) -->
+<div class="ticket-card relative cursor-pointer overflow-hidden rounded-xl bg-surface-container-lowest p-space-md shadow-sm hover:shadow-md transition-all ring-2 ring-primary" onclick="selectTicketCard(this, 2.25, 'Single Metro &amp; Bus Ride')">
+<div class="flex items-start justify-between">
+<div class="flex flex-col space-y-1">
+<div class="flex items-center space-x-2">
+<span class="font-headline-sm text-headline-sm text-on-surface">Single Metro &amp; Bus</span>
+<span class="rounded-full bg-tertiary-fixed/30 px-2 py-0.5 font-label-sm text-label-sm text-on-tertiary-fixed font-bold">Instant Activate</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">90 minutes unlimited transfers across all city transit vehicles.</p>
+</div>
+<div class="text-right">
+<span class="font-headline-md text-headline-md font-bold text-primary">₹25.00</span>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">1 person</span>
+</div>
+</div>
+<div class="mt-3 flex items-center justify-between pt-2">
+<div class="flex items-center space-x-2 text-tertiary">
+<span class="material-symbols-outlined text-[18px]">bolt</span>
+<span class="font-label-sm text-label-sm font-semibold">Immediate Turnstile Clearance</span>
+</div>
+<span class="material-symbols-outlined text-[20px] text-primary" style="font-variation-settings: &quot;FILL&quot; 1;">radio_button_checked</span>
+</div>
+</div>
+<!-- Card 2: 24-Hour Pass (Best Value Emerald) -->
+<div class="ticket-card relative cursor-pointer overflow-hidden rounded-xl bg-surface-container-lowest p-space-md shadow-sm hover:shadow-md transition-all" onclick="selectTicketCard(this, 6.50, '24-Hour Citywide Pass')">
+<div class="flex items-start justify-between">
+<div class="flex flex-col space-y-1">
+<div class="flex items-center space-x-2">
+<span class="font-headline-sm text-headline-sm text-on-surface">24-Hour Citywide Pass</span>
+<span class="rounded-full bg-tertiary-fixed/40 px-2 py-0.5 font-label-sm text-label-sm text-on-tertiary-fixed font-bold uppercase tracking-wider">Best Value</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Unlimited 24-hour access to high-frequency buses, light rail &amp; harbor ferries.</p>
+</div>
+<div class="text-right">
+<span class="font-headline-md text-headline-md font-bold text-on-surface">₹70.00</span>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">All Zones</span>
+</div>
+</div>
+<div class="mt-3 flex items-center justify-between pt-2">
+<div class="flex items-center space-x-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+<span class="font-label-sm text-label-sm">Free return guarantee during service delays</span>
+</div>
+<span class="material-symbols-outlined text-[20px] text-outline-variant">radio_button_unchecked</span>
+</div>
+</div>
+<!-- Card 3: 7-Day Commuter Pass -->
+<div class="ticket-card relative cursor-pointer overflow-hidden rounded-xl bg-surface-container-lowest p-space-md shadow-sm hover:shadow-md transition-all" onclick="selectTicketCard(this, 24.00, '7-Day Commuter Pass')">
+<div class="flex items-start justify-between">
+<div class="flex flex-col space-y-1">
+<div class="flex items-center space-x-2">
+<span class="font-headline-sm text-headline-sm text-on-surface">7-Day Commuter</span>
+<span class="rounded-full bg-secondary-container px-2 py-0.5 font-label-sm text-label-sm text-on-secondary-container font-semibold">Rush Hour Ready</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Engineered for weekday roundtrips with bypass priority during peak congestions.</p>
+</div>
+<div class="text-right">
+<span class="font-headline-md text-headline-md font-bold text-on-surface">₹350.00</span>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">7 full days</span>
+</div>
+</div>
+<div class="mt-3 flex items-center justify-between pt-2">
+<div class="flex items-center space-x-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">speed</span>
+<span class="font-label-sm text-label-sm">Express bus line priority seating</span>
+</div>
+<span class="material-symbols-outlined text-[20px] text-outline-variant">radio_button_unchecked</span>
+</div>
+</div>
+<!-- Card 4: Monthly All-Access Pass (AI Copilot Included) -->
+<div class="ticket-card relative cursor-pointer overflow-hidden rounded-xl bg-surface-container-lowest p-space-md shadow-sm hover:shadow-md transition-all" onclick="selectTicketCard(this, 78.00, 'Monthly All-Access Pass')">
+<div class="flex items-start justify-between">
+<div class="flex flex-col space-y-1">
+<div class="flex items-center space-x-2">
+<span class="font-headline-sm text-headline-sm text-on-surface">Monthly All-Access</span>
+<span class="rounded-full bg-error-container px-2 py-0.5 font-label-sm text-label-sm text-on-error-container font-bold">Save 28%</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Full metropolitan freedom plus TransAI predictive rerouting &amp; seat reservations.</p>
+</div>
+<div class="text-right">
+<span class="font-headline-md text-headline-md font-bold text-on-surface">₹1,200.00</span>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">30 days</span>
+</div>
+</div>
+<div class="mt-3 flex items-center justify-between pt-2">
+<div class="flex items-center space-x-2 text-primary font-semibold">
+<span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+<span class="font-label-sm text-label-sm">TransAI Copilot Priority Access</span>
+</div>
+<span class="material-symbols-outlined text-[20px] text-outline-variant">radio_button_unchecked</span>
+</div>
+</div>
+</div>
+<!-- Live Visual Digital Ticket Preview / QR Drawer Modal -->
+<div class="fixed inset-0 z-50 flex items-end justify-center bg-inverse-surface/60 backdrop-blur-md transition-opacity duration-300 opacity-0 pointer-events-none" id="pass-modal">
+<div class="w-full max-w-lg rounded-t-2xl bg-surface p-space-md shadow-2xl transition-transform duration-300 transform translate-y-full flex flex-col space-y-space-md" id="pass-sheet">
+<!-- Sheet Handle -->
+<div class="mx-auto h-1 w-12 rounded-full bg-outline-variant"></div>
+<!-- Header & Close -->
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-primary text-[24px]">verified</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Digital Boarding Pass</span>
+</div>
+<button class="flex h-9 w-9 items-center justify-center rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant" onclick="closePassModal()">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- Holographic Ticket Card Element -->
+<div class="relative overflow-hidden rounded-xl bg-gradient-to-b from-surface-container-lowest to-surface-container-low p-space-md shadow-lg">
+<!-- Hologram Animated Banner -->
+<div class="relative h-2 w-full overflow-hidden rounded-full bg-surface-container-high mb-space-sm">
+<div class="absolute inset-0 bg-gradient-to-r from-primary via-tertiary to-primary-fixed animate-pulse"></div>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-primary uppercase font-bold tracking-wider">Multi-Transit Pass</span>
+<div class="flex items-center space-x-1.5 rounded-full bg-tertiary-fixed/30 px-2.5 py-0.5 text-on-tertiary-fixed">
+<span class="h-2 w-2 rounded-full bg-tertiary animate-pulse"></span>
+<span class="font-label-sm text-label-sm font-bold" id="pass-timer">Expires in 01h:24m:12s</span>
+</div>
+</div>
+<!-- Simulated Authentic QR Code -->
+<div class="my-space-md flex flex-col items-center justify-center">
+<div class="relative rounded-xl bg-surface-container-lowest p-3 shadow-md">
+<!-- Lightweight SVG QR Simulation -->
+<svg class="h-44 w-44 text-on-surface" fill="currentColor" viewBox="0 0 100 100">
+<rect fill="none" height="28" stroke="currentColor" stroke-width="4" width="28" x="5" y="5"></rect>
+<rect height="16" width="16" x="11" y="11"></rect>
+<rect fill="none" height="28" stroke="currentColor" stroke-width="4" width="28" x="67" y="5"></rect>
+<rect height="16" width="16" x="73" y="11"></rect>
+<rect fill="none" height="28" stroke="currentColor" stroke-width="4" width="28" x="5" y="67"></rect>
+<rect height="16" width="16" x="11" y="73"></rect>
+<!-- Data matrix dots -->
+<rect height="5" width="5" x="38" y="8"></rect><rect height="5" width="5" x="48" y="8"></rect><rect height="5" width="5" x="58" y="14"></rect>
+<rect height="5" width="5" x="38" y="24"></rect><rect height="5" width="5" x="48" y="20"></rect><rect height="5" width="5" x="58" y="28"></rect>
+<rect height="5" width="5" x="8" y="38"></rect><rect height="5" width="5" x="20" y="38"></rect><rect height="5" width="5" x="28" y="44"></rect>
+<rect height="8" width="8" x="38" y="38"></rect><rect height="6" width="6" x="52" y="38"></rect><rect height="5" width="5" x="68" y="38"></rect>
+<rect height="5" width="5" x="78" y="44"></rect><rect height="5" width="5" x="88" y="38"></rect>
+<rect height="6" width="6" x="38" y="52"></rect><rect height="5" width="5" x="48" y="58"></rect><rect height="6" width="6" x="60" y="52"></rect>
+<rect height="5" width="5" x="72" y="58"></rect><rect height="5" width="5" x="85" y="52"></rect>
+<rect height="6" width="6" x="38" y="68"></rect><rect height="5" width="5" x="48" y="74"></rect><rect height="6" width="6" x="58" y="68"></rect>
+<rect height="5" width="5" x="68" y="74"></rect><rect height="6" width="6" x="82" y="68"></rect><rect height="5" width="5" x="88" y="82"></rect>
+<rect height="5" width="5" x="38" y="85"></rect><rect height="6" width="6" x="52" y="82"></rect><rect height="5" width="5" x="65" y="85"></rect>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-sm">
+<span class="material-symbols-outlined text-[18px]">directions_bus</span>
+</div>
+</div>
+</div>
+<span class="mt-2 font-label-sm text-label-sm text-on-surface-variant font-medium">Auto-refreshes security token every 15s</span>
+</div>
+<!-- Route & Passenger Details -->
+<div class="flex items-center justify-between rounded-lg bg-surface-container px-3 py-2">
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">Validated Vehicles</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">Lines 42 • 108 • 88 Metro</span>
+</div>
+<div class="text-right">
+<span class="block font-label-sm text-label-sm text-on-surface-variant">Ticket ID</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">#AETH-8940-X</span>
+</div>
+</div>
+</div>
+<!-- Quick Action: Add to Wallet -->
+<button class="w-full flex items-center justify-center space-x-2 rounded-xl bg-inverse-surface py-3 text-on-primary font-label-md text-label-md transition-all active:scale-98" onclick="closePassModal()">
+<span class="material-symbols-outlined text-[20px]">wallet</span>
+<span>Save to Apple Wallet / Google Wallet</span>
+</button>
+</div>
+</div>
+<!-- Saved Payment Method & 1-Tap Selector -->
+<div class="flex flex-col space-y-space-xs rounded-xl bg-surface-container-low p-space-md">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Payment Method</span>
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-space-sm">
+<div class="flex h-10 w-14 items-center justify-center rounded-lg bg-surface-container-lowest shadow-sm">
+<span class="material-symbols-outlined text-primary text-[24px]">credit_card</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Visa ending in 4092</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Aether Auto-Debit Preferred</span>
+</div>
+</div>
+<button class="font-label-md text-label-md text-primary font-semibold hover:underline">Change</button>
+</div>
+</div>
+<!-- Primary Sticky Checkout Action Bar -->
+<div class="sticky bottom-0 z-40 -mx-margin px-margin pt-space-xs pb-space-xs bg-surface/90 backdrop-blur-xl">
+<div class="flex items-center space-x-2">
+<!-- Fast Pay Shortcut (Apple/Google Pay) -->
+<button aria-label="1-Tap Pay" class="flex h-14 w-16 items-center justify-center rounded-xl bg-inverse-surface text-on-primary shadow-md active:scale-95 transition-transform" onclick="simulateFastPay()">
+<span class="material-symbols-outlined text-[24px]">contactless</span>
+</button>
+<!-- Main Dynamic CTA Button -->
+<button class="flex-1 flex h-14 items-center justify-center space-x-2 rounded-xl bg-primary-container hover:bg-primary px-space-md text-on-primary shadow-md transition-all active:scale-[0.98]" id="cta-button" onclick="executePurchase()">
+<span class="material-symbols-outlined text-[20px]">security</span>
+<span class="font-headline-sm text-headline-sm font-semibold" id="cta-text">Purchase Ticket • ₹25.00</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+<div class="mt-2 flex items-center justify-center space-x-2">
+<span class="material-symbols-outlined text-[14px] text-tertiary">lock</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Biometric protected • Encrypted transit token</span>
+</div>
+</div>
+</div>
+<script>
+  let currentTicketPrice = 2.25;
+  let currentTicketName = 'Single Metro & Bus Ride';
+  let balance = 42.50;
+
+  function selectTab(element, category) {
+    document.querySelectorAll('.fare-tab').forEach(tab => {
+      tab.classList.remove('bg-primary-container', 'text-on-primary', 'shadow-sm');
+      tab.classList.add('bg-surface-container', 'text-on-surface-variant');
+    });
+    element.classList.remove('bg-surface-container', 'text-on-surface-variant');
+    element.classList.add('bg-primary-container', 'text-on-primary', 'shadow-sm');
+  }
+
+  function selectTicketCard(element, price, name) {
+    currentTicketPrice = price;
+    currentTicketName = name;
+
+    // Reset styles
+    document.querySelectorAll('.ticket-card').forEach(card => {
+      card.classList.remove('ring-2', 'ring-primary');
+      const radio = card.querySelector('.material-symbols-outlined:last-child');
+      if (radio) {
+        radio.innerText = 'radio_button_unchecked';
+        radio.classList.remove('text-primary');
+        radio.classList.add('text-outline-variant');
+      }
+    });
+
+    // Apply active styles
+    element.classList.add('ring-2', 'ring-primary');
+    const activeRadio = element.querySelector('.material-symbols-outlined:last-child');
+    if (activeRadio) {
+      activeRadio.innerText = 'radio_button_checked';
+      activeRadio.classList.remove('text-outline-variant');
+      activeRadio.classList.add('text-primary');
+    }
+
+    // Update CTA button
+    const ctaText = document.getElementById('cta-text');
+    if (ctaText) {
+      ctaText.innerText = `Purchase Ticket • $${price.toFixed(2)}`;
+    }
+  }
+
+  function addBalance(amount) {
+    balance += amount;
+    const balanceDisplay = document.querySelector('.font-headline-xl-mobile');
+    if (balanceDisplay) {
+      balanceDisplay.innerText = `$${balance.toFixed(2)}`;
+    }
+    
+    // Quick micro feedback
+    const btn = event.currentTarget;
+    btn.classList.add('scale-110');
+    setTimeout(() => btn.classList.remove('scale-110'), 150);
+  }
+
+  function openPassModal() {
+    const modal = document.getElementById('pass-modal');
+    const sheet = document.getElementById('pass-sheet');
+    modal.classList.remove('opacity-0', 'pointer-events-none');
+    modal.classList.add('opacity-100');
+    sheet.classList.remove('translate-y-full');
+    sheet.classList.add('translate-y-0');
+  }
+
+  function closePassModal() {
+    const modal = document.getElementById('pass-modal');
+    const sheet = document.getElementById('pass-sheet');
+    modal.classList.add('opacity-0', 'pointer-events-none');
+    modal.classList.remove('opacity-100');
+    sheet.classList.add('translate-y-full');
+    sheet.classList.remove('translate-y-0');
+  }
+
+  function executePurchase() {
+    const ctaBtn = document.getElementById('cta-button');
+    const originalText = ctaBtn.innerHTML;
+    
+    // Simulate biometric check animation
+    ctaBtn.innerHTML = `
+      <span class="material-symbols-outlined animate-spin text-[20px]">sync</span>
+      <span class="font-headline-sm text-headline-sm font-semibold">Authorizing Pass...</span>
+    `;
+    ctaBtn.disabled = true;
+
+    setTimeout(() => {
+      ctaBtn.innerHTML = `
+        <span class="material-symbols-outlined text-[20px]">check_circle</span>
+        <span class="font-headline-sm text-headline-sm font-semibold">Pass Activated!</span>
+      `;
+      ctaBtn.classList.remove('bg-primary-container');
+      ctaBtn.classList.add('bg-tertiary');
+
+      setTimeout(() => {
+        ctaBtn.innerHTML = originalText;
+        ctaBtn.classList.remove('bg-tertiary');
+        ctaBtn.classList.add('bg-primary-container');
+        ctaBtn.disabled = false;
+        openPassModal();
+      }, 700);
+    }, 1100);
+  }
+
+  function simulateFastPay() {
+    executePurchase();
+  }
+
+  // Auto-reload pill interactive toggle
+  document.getElementById('toggle-autoreload')?.addEventListener('click', function() {
+    const ping = this.querySelector('.animate-ping');
+    const dot = this.querySelector('.relative.inline-flex');
+    const label = this.querySelector('span:last-child');
+    
+    if (label.innerText.includes('Active')) {
+      label.innerText = 'Auto-Reload Paused';
+      ping.classList.remove('bg-tertiary-fixed');
+      ping.classList.add('bg-error-container');
+      dot.classList.remove('bg-tertiary-fixed');
+      dot.classList.add('bg-error');
+    } else {
+      label.innerText = 'Auto-Reload Active';
+      ping.classList.remove('bg-error-container');
+      ping.classList.add('bg-tertiary-fixed');
+      dot.classList.remove('bg-error');
+      dot.classList.add('bg-tertiary-fixed');
+    }
+  });
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/85 backdrop-blur-xl shadow-[0_-4px_20px_rgba(11,28,48,0.06)]" data-active-classes="text-primary-container font-semibold"><div class="flex justify-around items-center h-16 px-space-xs"><a class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[44px] text-on-surface-variant hover:text-primary transition-colors" data-path="home" href="#"><span class="material-symbols-outlined text-[24px]">home</span><span class="font-label-sm text-label-sm">Home</span></a><a class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[44px] text-on-surface-variant hover:text-primary transition-colors" data-path="explore" href="#"><span class="material-symbols-outlined text-[24px]">explore</span><span class="font-label-sm text-label-sm">Explore</span></a><a class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[44px] text-on-surface-variant hover:text-primary transition-colors" data-path="live-tracking" href="#"><span class="material-symbols-outlined text-[24px]">directions_bus</span><span class="font-label-sm text-label-sm">Live Track</span></a><a aria-current="page" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[44px] transition-colors text-primary-container font-semibold" data-path="tickets-and-passes" href="#"><span class="material-symbols-outlined text-[24px]">confirmation_number</span><span class="font-label-sm text-label-sm">Tickets</span></a><a class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[44px] text-on-surface-variant hover:text-primary transition-colors" data-path="profile" href="#"><span class="material-symbols-outlined text-[24px]">person</span><span class="font-label-sm text-label-sm">Profile</span></a></div></nav>
+
+</body></html>
